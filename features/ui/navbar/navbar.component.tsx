@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import NavItem from "./navitem.component";
+import SearchBar from "./searchbar.component";
 
 export default function NavBar() {
   return (
@@ -23,13 +24,7 @@ export default function NavBar() {
             />
           </a>
         </Link>
-        <span className="relative border-none md:border-b md:w-auto focus-within:border-b-2 text-primary-400">
-          <input
-            className="hidden md:inline outline-none text-lg pr-3 pl-3"
-            placeholder="Rechercher un produit"
-          />
-          <i className="inline md:absolute inset-y-0 right-0 bi bi-search  pointer-events-none" />
-        </span>
+        <SearchBar />
         <div className="hidden lg:flex gap-2">
           <Link href="#">
             <a>
