@@ -37,6 +37,22 @@ export function HomeContainer() {
             <ProductCard />
           </div>
         </section>
+        <section className="flex flex-col space-y-2">
+          <div className="flex justify-between md:justify-start">
+            <h2 className="peer font-serif font-bold text-lg">En Promotion</h2>
+            <button className="border border-grey-400 rounded-2xl lg:border-none lg:p-0 p-1 peer-focus:border-black peer-focus:bg-grey-400 peer-focus:text-white focus:border-black focus:bg-grey-400 focus:text-white hover:border-black hover:bg-grey-400 hover:text-white">
+              <span className="inline lg:hidden">Voir plus</span>
+              <i className="hidden lg:inline bi bi-chevron-right"></i>
+            </button>
+          </div>
+          <div className="flex overflow-auto font-sans gap-2">
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+            <ProductCard />
+          </div>
+        </section>
       </div>
     </>
   );
