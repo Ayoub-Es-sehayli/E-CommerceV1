@@ -7,6 +7,12 @@ export default function CartItemsList() {
       <CartItem />
       <CartItem />
       <CartItem />
+      <span className="flex justify-between p-2 text-lg font-bold bg-light">
+        <h3>
+          Total <span className="font-normal text-sm">(4 articles)</span>
+        </h3>
+        <span>163 DH</span>
+      </span>
     </section>
   );
 }

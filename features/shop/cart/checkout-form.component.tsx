@@ -3,7 +3,7 @@ export default function CheckoutForm() {
     <aside className="flex flex-col space-y-2 bg-primary-400 text-white h-min rounded-lg p-4">
       <h2 className="font-bold text-2xl">Passer à la caisse</h2>
       {/* Shipping */}
-      <section className="flex flex-col">
+      <section className="flex flex-col px-2">
         <h3 className="font-bold text-lg">Livraison</h3>
         <label htmlFor="address">Address</label>
         <textarea

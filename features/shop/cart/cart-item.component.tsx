@@ -16,8 +16,9 @@ export default function CartItem() {
       </figure>
       <span className="flex flex-col gap-2 grow">
         <header>
-          <h3 className="font-bold max-w-[20ch] overflow-hidden whitespace-nowrap text-ellipsis">
-            Produit Lorem ipsum dolor sit amet consectetur.
+          <h3 className="font-bold max-w-[20ch] lg:max-w-[45ch] overflow-hidden whitespace-nowrap text-ellipsis">
+            Produit Lorem ipsum dolor sit amet consectetur.Produit Lorem ipsum
+            dolor sit amet consectetur.
           </h3>
           <p className="text-grey-400 capitalize">Visage</p>
         </header>
