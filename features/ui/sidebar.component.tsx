@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export function SideBar() {
   return (
-    <section className="daisy-drawer-side w-80 lg:hidden text-base capitalize font-bold">
+    <section className="daisy-drawer-side lg:hidden text-base capitalize font-bold">
       <label htmlFor="nav-drawer" className="daisy-drawer-overlay"></label>
-      <div className="grid grid-flow-row grid-rows-[min-content_1fr_min-content] bg-white shadow-xl shadow-primary-600 lg:shadow-none">
+      <div className="grid grid-flow-row grid-rows-[min-content_1fr_min-content] w-80 bg-white shadow-xl shadow-primary-600 lg:shadow-none">
         <label
           htmlFor="nav-drawer"
           className={
