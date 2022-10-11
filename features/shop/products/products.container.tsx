@@ -1,7 +1,7 @@
 import Modal from "@features/ui/modal.component";
 import ProductCard from "@features/ui/product-card.component";
 import Head from "next/head";
-import FilterForm from "./filter-form.component";
+import FilterForm from "./filter-form";
 
 export default function ProductsContainer() {
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
