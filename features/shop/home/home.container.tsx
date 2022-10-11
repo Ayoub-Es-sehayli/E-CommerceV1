@@ -29,7 +29,7 @@ export function HomeContainer() {
               <i className="hidden lg:inline bi bi-chevron-right"></i>
             </button>
           </div>
-          <div className="flex overflow-auto font-sans gap-2">
+          <div className="inline-flex overflow-auto font-sans gap-2">
             <ProductCard />
             <ProductCard />
             <ProductCard />
@@ -45,7 +45,7 @@ export function HomeContainer() {
               <i className="hidden lg:inline bi bi-chevron-right"></i>
             </button>
           </div>
-          <div className="flex overflow-auto font-sans gap-2">
+          <div className="inline-flex overflow-auto font-sans gap-2">
             <ProductCard />
             <ProductCard />
             <ProductCard />
