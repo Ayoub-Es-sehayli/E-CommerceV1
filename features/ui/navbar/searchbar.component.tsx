@@ -1,3 +1,5 @@
+import Modal from "../modal.component";
+
 export default function SearchBar() {
   return (
     <span className="relative border-none md:border-b md:w-auto focus-within:border-b-2 text-primary-400">
@@ -9,9 +11,8 @@ export default function SearchBar() {
         htmlFor="search-modal"
         className="inline md:absolute inset-y-0 right-0 bi bi-search pointer-events-auto md:pointer-events-none"
       />
-      <input type="checkbox" id="search-modal" className="daisy-modal-toggle" />
-      <div className="daisy-modal">
-        <div className="daisy-modal-box mt-4 place-self-start flex flex-col rounded-lg gap-2 bg-white border border-primary-600 p-2 relative">
+      <Modal modalName="search-modal" className="mt-4 place-self-start">
+        <div className="flex flex-col rounded-lg gap-2 bg-white border border-primary-600 p-2 relative">
           <label
             htmlFor="search-modal"
             className="bi bi-x absolute top-2 right-2"
@@ -24,7 +25,7 @@ export default function SearchBar() {
             Rechercher
           </button>
         </div>
-      </div>
+      </Modal>
     </span>
   );
 }
