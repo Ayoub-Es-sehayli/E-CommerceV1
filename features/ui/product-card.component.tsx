@@ -1,6 +1,6 @@
 export default function ProductCard() {
   return (
-    <article className="relative flex flex-col w-6/12 md:w-4/12 lg:w-48 pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
+    <article className="relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
       <figure className="place-self-center">
         <img
           src="/static/cerave_foaming_cleanser-removebg-preview.png"
@@ -15,7 +15,7 @@ export default function ProductCard() {
       </span>
       <i className={`absolute top-1 right-2 bi bi-heart`} />
       <header>
-        <h3 className="font-bold overflow-hidden whitespace-nowrap text-ellipsis">
+        <h3 className="font-bold max-w-[20ch] overflow-hidden whitespace-nowrap text-ellipsis">
           Produit Lorem ipsum dolor sit amet consectetur.
         </h3>
         <p className="text-grey-400 capitalize">Visage</p>
