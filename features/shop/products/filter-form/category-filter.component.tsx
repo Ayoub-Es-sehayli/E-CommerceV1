@@ -1,13 +1,19 @@
+import { HierarchicalMenu } from "react-instantsearch-hooks-web";
 export default function CategoryFilter() {
   return (
     <section>
-      <h4>Categories</h4>
-      <div className="flex flex-col">
-        <label>
-          <input type="radio" name="category" className="mx-2" />
-          Visage <span className="text-primary-200">[1]</span>
-        </label>
-      </div>
+      <h4 className="font-bold text-lg underline">Categories</h4>
+      <HierarchicalMenu
+        attributes={["category.lvl0", "category.lvl1", "category.lvl2"]}
+        classNames={{
+          count: "text-primary-200",
+          item: "px-2",
+          label: "mr-2 capitalize",
+          childList: "ml-2",
+          selectedItemLink: "font-bold text-light",
+        }}
+        separator=" | "
+      />
     </section>
   );
 }

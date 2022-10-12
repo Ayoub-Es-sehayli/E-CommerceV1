@@ -1,8 +1,8 @@
 import ProductCard from "@features/ui/product-card.component";
 import React from "react";
+import { Hits } from "react-instantsearch-hooks-web";
 
 export default function ProductList() {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
     <section className="flex flex-col gap-2 lg:basis-9/12">
       <div className="flex justify-between">
@@ -15,11 +15,12 @@ export default function ProductList() {
         </label>
       </div>
       <section>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 items-stretch">
-          {arr.map((i) => {
-            return <ProductCard key={i} />;
-          })}
-        </div>
+        <Hits
+          classNames={{
+            list: "grid grid-cols-2 md:grid-cols-4 gap-2 items-stretch",
+          }}
+          hitComponent={({ hit }) => <ProductCard item={hit} />}
+        />
       </section>
     </section>
   );

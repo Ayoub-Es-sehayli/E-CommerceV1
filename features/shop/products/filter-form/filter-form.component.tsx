@@ -12,9 +12,12 @@ export default function FilterForm({ className }: Props) {
     >
       <span className="flex justify-between w-full">
         <h3 className="font-bold text-xl">Filtrer</h3>
-        <button type="submit" className="text-black bg-white px-2 rounded-xl">
-          <label htmlFor="filter-modal">Appliquer</label>
-        </button>
+        <label
+          htmlFor="filter-modal"
+          className="text-black bg-white lg:hidden flex items-center px-2 rounded-xl"
+        >
+          Fermer
+        </label>
       </span>
       <CategoryFilter />
       <BrandFilter />
