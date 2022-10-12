@@ -1,6 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import SessionSlice from "./session.slice";
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    SessionSlice,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

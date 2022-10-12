@@ -74,7 +74,7 @@ export function SideBar() {
             </Link>
           </li>
           <li>
-            <Link href="">
+            <Link href="/session/login">
               <a className="flex gap-2 bg-transparent focus:bg-light px-2 py-1 rounded-lg">
                 <i className="bi bi-person text-lg" />
                 Se Connecter
