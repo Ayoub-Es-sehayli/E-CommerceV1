@@ -8,7 +8,7 @@ export default function ProductCard({ item }: Props) {
 
   return (
     <article className="relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
-      <figure className="h-44 w-auto place-self-center">
+      <figure className="h-44 w-auto place-self-center flex items-center">
         <img
           src={product.thumbnail}
           className={`h-44 w-auto object-contain ${isLoading ? "hidden" : ""}`}
