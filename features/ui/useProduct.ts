@@ -27,6 +27,7 @@ export type ProductCardModel = ProductBase & {
 };
 
 export default function useProduct(item: Record<string, any>) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [product, setProduct] = useState<ProductCardModel>({
     id: "",
   });
@@ -48,11 +49,12 @@ export default function useProduct(item: Record<string, any>) {
           };
 
           setProduct(product);
+          setIsLoading(false);
         }
       );
     }, [item]);
   } catch (error) {
     console.log(error);
   }
-  return { product };
+  return { product, isLoading };
 }

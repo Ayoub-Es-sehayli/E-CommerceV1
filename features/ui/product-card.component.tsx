@@ -1,19 +1,20 @@
+import Spinner from "./spinner.component";
 import useProduct from "./useProduct";
 type Props = {
   item: Record<string, any>;
 };
 export default function ProductCard({ item }: Props) {
-  const { product } = useProduct(item);
-  console.log(product);
+  const { product, isLoading } = useProduct(item);
 
   return (
     <article className="relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
-      <figure className="place-self-center">
+      <figure className="h-44 w-auto place-self-center">
         <img
           src={product.thumbnail}
-          className="h-44 w-auto object-contain"
+          className={`h-44 w-auto object-contain ${isLoading ? "hidden" : ""}`}
           alt="Thumbnail"
         />
+        <Spinner isLoading={isLoading} />
       </figure>
       <span
         className={`absolute top-1 left-2 bg-accent text-white text-sm rounded-xl px-1.5 ${
