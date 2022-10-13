@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { firebaseStorage } from "services/firebase-service";
 import { ref, getDownloadURL } from "firebase/storage";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { addToCart } from "@store/cart.slice";
 type ProductBase = {
   name?: string;
   thumbnail?: string;
@@ -10,6 +12,8 @@ type ProductBase = {
   salePercentage?: number;
   createdAt?: string;
 };
+
+// TODO: Implement the hook to use this type instead of Record<string, any>
 export type ProductHitModel = ProductBase & {
   objectID: string;
   category: {
@@ -27,10 +31,18 @@ export type ProductCardModel = ProductBase & {
 };
 
 export default function useProduct(item: Record<string, any>) {
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductCardModel>({
     id: "",
   });
+  const { items: cartItems } = useAppSelector((state) => state.CartSlice);
+  const AddToCart = useCallback(() => {
+    setAddingToCart(true);
+    dispatch(addToCart(product));
+    setAddingToCart(false);
+  }, [product]);
   try {
     useEffect(() => {
       getDownloadURL(ref(firebaseStorage, `/products/${item.thumbnail}`)).then(
@@ -47,14 +59,22 @@ export default function useProduct(item: Record<string, any>) {
               ? item.price - Math.ceil(item.price * (14 / 100))
               : undefined,
           };
-
           setProduct(product);
           setIsLoading(false);
         }
       );
     }, [item]);
+    useEffect(() => {
+      const itemIds = cartItems.map((c) => {
+        return c.id;
+      });
+      setProduct({
+        ...product,
+        inCart: itemIds.includes(product.id),
+      });
+    }, [cartItems]);
   } catch (error) {
     console.log(error);
   }
-  return { product, isLoading };
+  return { product, isLoading, AddToCart, addingToCart };
 }

@@ -4,7 +4,7 @@ type Props = {
   item: Record<string, any>;
 };
 export default function ProductCard({ item }: Props) {
-  const { product, isLoading } = useProduct(item);
+  const { product, isLoading, AddToCart, addingToCart } = useProduct(item);
 
   return (
     <article className="relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
@@ -45,11 +45,17 @@ export default function ProductCard({ item }: Props) {
         >
           {product.salePrice ? `${product.salePrice} DH` : ""}
         </span>
-        <button
-          className={`text-xl hover:text-primary-200 bi ${
-            product.inCart ? "bi-bag-check" : "bi-bag-plus"
-          }`}
-        ></button>
+        {addingToCart ? (
+          <Spinner isLoading={addingToCart} />
+        ) : (
+          <button
+            onClick={AddToCart}
+            disabled={product.inCart}
+            className={`text-xl hover:text-primary-200 bi ${
+              product.inCart ? "bi-bag-check" : "bi-bag-plus"
+            }`}
+          ></button>
+        )}
       </footer>
     </article>
   );
