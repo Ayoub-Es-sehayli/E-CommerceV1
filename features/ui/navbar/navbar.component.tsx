@@ -1,9 +1,11 @@
+import useSession from "@features/session/useSession.hook";
 import Image from "next/image";
 import Link from "next/link";
 import NavItem from "./navitem.component";
 import SearchBar from "./searchbar.component";
 
 export default function NavBar() {
+  const { isLoggedIn, Logout } = useSession();
   return (
     <nav className="text-primary-400 font-serif text-lg">
       <section className="flex w-full justify-between items-center p-4 lg:p-2">
@@ -36,11 +38,19 @@ export default function NavBar() {
               <i className="bi bi-bag " />
             </a>
           </Link>
-          <Link href="#">
-            <a>
-              <i className="bi bi-person " />
-            </a>
-          </Link>
+          {isLoggedIn ? (
+            <button
+              title="Se Déconnecter"
+              onClick={Logout}
+              className="bi bi-box-arrow-left"
+            ></button>
+          ) : (
+            <Link href="/session/login">
+              <a title="Se Connecter">
+                <i className="bi bi-person " />
+              </a>
+            </Link>
+          )}
         </div>
       </section>
       <section

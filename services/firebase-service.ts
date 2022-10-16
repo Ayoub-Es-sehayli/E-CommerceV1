@@ -28,25 +28,17 @@ const firebaseAuth = getAuth(firebaseApp);
 firebaseAuth.languageCode = "fr";
 
 const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({});
-export async function googleSignIn() {
-  signInWithRedirect(firebaseAuth, googleProvider);
-}
-
-export async function sendEmailLink(email: string) {
-  const emailLinkConfig: ActionCodeSettings = {
-    url: "http://localhost:3001/session/login",
-    handleCodeInApp: true,
-  };
-  await sendSignInLinkToEmail(firebaseAuth, email, emailLinkConfig);
-}
-export async function emailLinkSignIn(email: string, link: string) {
-  await signInWithEmailLink(firebaseAuth, email, link);
-}
-export async function firebaseLogout() {
-  signOut(firebaseAuth);
-}
+const emailLinkConfig: ActionCodeSettings = {
+  url: "http://localhost:3001/session/login?method=email",
+  handleCodeInApp: true,
+};
 
 const firebaseStorage = getStorage(firebaseApp);
 
-export { firebaseAuth, firebaseDb, firebaseStorage };
+export {
+  firebaseAuth,
+  firebaseDb,
+  firebaseStorage,
+  googleProvider,
+  emailLinkConfig,
+};

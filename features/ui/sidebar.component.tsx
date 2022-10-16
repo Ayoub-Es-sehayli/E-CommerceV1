@@ -1,6 +1,8 @@
+import useSession from "@features/session/useSession.hook";
 import Link from "next/link";
 
 export function SideBar() {
+  const { isLoggedIn, Logout } = useSession();
   return (
     <section className="daisy-drawer-side lg:hidden text-base capitalize font-bold">
       <label htmlFor="nav-drawer" className="daisy-drawer-overlay"></label>
@@ -74,12 +76,21 @@ export function SideBar() {
             </Link>
           </li>
           <li>
-            <Link href="/session/login">
-              <a className="flex gap-2 bg-transparent focus:bg-light px-2 py-1 rounded-lg">
-                <i className="bi bi-person text-lg" />
-                Se Connecter
-              </a>
-            </Link>
+            {isLoggedIn ? (
+              <button
+                onClick={Logout}
+                className="flex gap-2 bg-transparent focus:bg-light px-2 py-1 rounded-lg"
+              >
+                Se Déconnecter
+              </button>
+            ) : (
+              <Link href="/session/login">
+                <a className="flex gap-2 bg-transparent focus:bg-light px-2 py-1 rounded-lg">
+                  <i className="bi bi-person text-lg" />
+                  Se Connecter
+                </a>
+              </Link>
+            )}
           </li>
         </ul>
       </div>
