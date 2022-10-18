@@ -15,6 +15,9 @@ export default function useCartItem(props: CartItemProps) {
   const dispatch = useAppDispatch();
 
   const total = useMemo(() => {
+    if (item.salePercentage) {
+      return item.quantity * item.salePrice!;
+    }
     return item.price! * item.quantity;
   }, [item]);
 

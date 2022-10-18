@@ -59,6 +59,9 @@ export default function useCart() {
   };
   const total = useMemo(() => {
     return items.reduce((sum, item) => {
+      if (item.salePercentage) {
+        return sum + item.salePrice! * item.quantity;
+      }
       if (item.price) {
         return sum + item.price * item.quantity;
       }
