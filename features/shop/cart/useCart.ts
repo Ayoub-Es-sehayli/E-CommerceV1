@@ -2,9 +2,11 @@ import useSession from "@features/session/useSession.hook";
 import EOrderStatus from "@features/ui/order-status.enum";
 import { clearCartItems } from "@store/cart.slice";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { firebaseDb } from "services/firebase-service";
 import CheckoutFormModel from "./checkout.schema";
 
 export default function useCart() {
@@ -47,6 +49,7 @@ export default function useCart() {
           type: EOrderStatus.Ordered,
           date: Timestamp.fromDate(new Date()),
         };
+        await addDoc(collection(firebaseDb, "orders"), values);
         resetForm({
           values: { ...initialValues, items: [] },
         });
