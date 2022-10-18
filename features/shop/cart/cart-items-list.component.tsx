@@ -37,7 +37,7 @@ export default function CartItemsList({ items, total }: Props) {
           <h2 className="font-bold text-lg">
             Vous n'avez aucun produits dans votre panier
           </h2>
-          <Link href="/shop/product">
+          <Link href="/shop/products">
             <a className="underline text-primary-400">
               Consulter notre catalogue
             </a>
