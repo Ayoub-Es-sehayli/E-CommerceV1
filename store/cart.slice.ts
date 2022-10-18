@@ -5,23 +5,13 @@ export type CartItem = ProductCardModel & {
   quantity: number;
 };
 
-type ShippingModel = {
-  address: string;
-  city: string;
-};
-
 interface CartState {
   clientId?: string;
   items: CartItem[];
-  shipping: ShippingModel;
 }
 
 const initialState: CartState = {
   items: [],
-  shipping: {
-    address: "",
-    city: "",
-  },
 };
 
 export const CartSlice = createSlice({
@@ -59,8 +49,12 @@ export const CartSlice = createSlice({
         items: state.items.filter((item) => item.id !== payload),
       };
     },
+    clearCartItems: (state) => {
+      state.items = [];
+    },
   },
 });
 
-export const { addToCart, removeFromCart, setItemQuantity } = CartSlice.actions;
+export const { addToCart, removeFromCart, setItemQuantity, clearCartItems } =
+  CartSlice.actions;
 export default CartSlice.reducer;
