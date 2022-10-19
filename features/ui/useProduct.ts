@@ -1,8 +1,9 @@
-import { useEffect, useCallback, useState } from "react";
-import { firebaseStorage } from "services/firebase-service";
-import { ref, getDownloadURL } from "firebase/storage";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { addToCart } from "@store/cart.slice";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { getDownloadURL, ref } from "firebase/storage";
+import { useCallback, useEffect, useState } from "react";
+import { firebaseStorage } from "services/firebase-service";
+import useThumbnail from "./useThumbnail.hook";
 type ProductBase = {
   name?: string;
   thumbnail?: string;
@@ -32,6 +33,7 @@ export type ProductCardModel = ProductBase & {
 
 export default function useProduct(item: Record<string, any>) {
   const dispatch = useAppDispatch();
+  const getThumbnail = useThumbnail();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductCardModel>({
@@ -45,24 +47,32 @@ export default function useProduct(item: Record<string, any>) {
   }, [product]);
   try {
     useEffect(() => {
-      getDownloadURL(ref(firebaseStorage, `/products/${item.thumbnail}`)).then(
-        (url) => {
-          const product: ProductCardModel = {
-            id: item.objectID,
-            thumbnail: url,
-            name: item.name as string,
-            category: item.category.lvl0,
-            brand: item.brand as string,
-            price: item.price as number,
-            salePercentage: 14,
-            salePrice: item.price
-              ? item.price - Math.ceil(item.price * (14 / 100))
-              : undefined,
-          };
-          setProduct(product);
-          setIsLoading(false);
-        }
-      );
+      const thumbnailPromise =
+        item.thumbnail !== product.thumbnail
+          ? getThumbnail(item.thumbnail)
+          : Promise.resolve(product.thumbnail);
+      thumbnailPromise.then((url) => {
+        const product: ProductCardModel = {
+          id: item.objectID,
+          thumbnail: url,
+          name: item.name as string,
+          category: item.category.lvl2
+            ? (item.category.lvl2 as string).split(" > ")[2]
+            : item.category.lvl1
+            ? item.category.lvl1.split(" > ")[1]
+            : item.category.lvl0
+            ? item.category.lvl0
+            : item.category,
+          brand: item.brand as string,
+          price: item.price as number,
+          salePercentage: item.salePercentage as number,
+          salePrice: item.price
+            ? item.price - Math.ceil(item.price * (item.salePercentage / 100))
+            : undefined,
+        };
+        setProduct(product);
+        setIsLoading(false);
+      });
     }, [item]);
     useEffect(() => {
       const itemIds = cartItems.map((c) => {
