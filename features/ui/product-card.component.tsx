@@ -21,7 +21,7 @@ export default function ProductCard({ item }: Props) {
           product.salePercentage ? "" : "hidden"
         }`}
       >
-        14 %
+        {product.salePercentage} %
       </span>
       <i
         className={`absolute top-1 right-2 bi ${
@@ -36,12 +36,16 @@ export default function ProductCard({ item }: Props) {
       </header>
       <footer className="flex place-items-center justify-between font-bold">
         <span
-          className={`${product.salePrice ? "line-through text-grey-400" : ""}`}
+          className={`${
+            product.salePercentage ? "line-through text-grey-400" : ""
+          }`}
         >
           {product.price} DH
         </span>
         <span
-          className={`text-primary-200 ${product.salePrice ? "" : "hidden"}`}
+          className={`text-primary-200 ${
+            product.salePercentage ? "" : "hidden"
+          }`}
         >
           {product.salePrice ? `${product.salePrice} DH` : ""}
         </span>
