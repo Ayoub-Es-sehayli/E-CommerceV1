@@ -1,21 +1,21 @@
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { login, logout } from "@store/session.slice";
+import {
+  GoogleAuthProvider,
+  isSignInWithEmailLink,
+  sendSignInLinkToEmail,
+  signInWithCredential,
+  signInWithEmailLink,
+  signInWithPopup,
+} from "firebase/auth";
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   emailLinkConfig,
   firebaseAuth,
   googleProvider,
 } from "services/firebase-service";
-import {
-  signInWithPopup,
-  sendSignInLinkToEmail,
-  signInWithCredential,
-  GoogleAuthProvider,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
-} from "firebase/auth";
 import useSession from "./useSession.hook";
 interface Credentials {
   email: string;
@@ -43,19 +43,23 @@ export default function useAuth() {
     if (isLoggedIn) router.push("/shop");
   }, [isLoggedIn]);
   const handleGoogleSignIn = async () => {
-    await signInWithPopup(firebaseAuth, googleProvider).then((result) => {
-      if (result) {
-        const credentials = GoogleAuthProvider.credentialFromResult(result);
-        if (credentials) {
-          alert(`Is Google Auth ${result.user.uid}`);
-          // signInWithCredential(firebaseAuth, credentials).catch((error) => {
-          //   console.log(error);
-          // });
-        } else {
-          console.error("Failed to authenticate user");
+    await signInWithPopup(firebaseAuth, googleProvider)
+      .then((result) => {
+        if (result) {
+          const credentials = GoogleAuthProvider.credentialFromResult(result);
+          if (credentials) {
+            alert(`Is Google Auth ${result.user.uid}`);
+            // signInWithCredential(firebaseAuth, credentials).catch((error) => {
+            //   console.log(error);
+            // });
+          } else {
+            console.error("Failed to authenticate user");
+          }
         }
-      }
-    });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   const initialValues: Credentials = {
     email: "",
