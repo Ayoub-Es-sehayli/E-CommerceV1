@@ -1,7 +1,16 @@
+import { ErrorMessage } from "formik";
+
 type Props = {
-  message: string;
+  name: string;
 };
 
-export default function CustomErrorMessage({ message }: Props) {
-  return <span className="text-accent text-sm">{message}</span>;
+export default function CustomErrorMessage({ name }: Props) {
+  return (
+    <ErrorMessage
+      name="recipient.lastName"
+      render={(message) => (
+        <span className="text-accent text-sm">{message}</span>
+      )}
+    />
+  );
 }
