@@ -17,28 +17,19 @@ export default function CheckoutForm({ submitting }: Props) {
           name="recipient.lastName"
           className="rounded-sm outline-none focus:outline focus:outline-primary-600 text-lg text-black p-1"
         />
-        <ErrorMessage
-          name="recipient.lastName"
-          render={(msg) => <CustomErrorMessage message={msg} />}
-        />
+        <CustomErrorMessage name="recipient.lastName" />
         <label htmlFor="recipient.firstName">Prénom</label>
         <Field
           name="recipient.firstName"
           className="rounded-sm outline-none focus:outline focus:outline-primary-600 text-lg text-black p-1"
         />
-        <ErrorMessage
-          name="recipient.firstName"
-          render={(msg) => <CustomErrorMessage message={msg} />}
-        />
+        <CustomErrorMessage name="recipient.firstName" />
         <label htmlFor="recipient.tel">Télephone</label>
         <Field
           name="recipient.tel"
           className="rounded-sm outline-none focus:outline focus:outline-primary-600 text-lg text-black p-1"
         />
-        <ErrorMessage
-          name="recipient.tel"
-          render={(msg) => <CustomErrorMessage message={msg} />}
-        />
+        <CustomErrorMessage name="recipient.tel" />
       </section>
       {/* Shipping */}
       <section className="flex flex-col px-2">
@@ -49,19 +40,13 @@ export default function CheckoutForm({ submitting }: Props) {
           name="shipping.address"
           className="rounded-sm outline-none focus:outline focus:outline-primary-600 text-lg text-black p-1"
         />
-        <ErrorMessage
-          name="shipping.address"
-          render={(msg) => <CustomErrorMessage message={msg} />}
-        />
+        <CustomErrorMessage name="shipping.address" />
         <label htmlFor="shipping.city">Ville</label>
         <Field
           name="shipping.city"
           className="rounded-sm outline-none focus:outline focus:outline-primary-600 text-lg text-black p-1"
         />
-        <ErrorMessage
-          name="shipping.city"
-          render={(msg) => <CustomErrorMessage message={msg} />}
-        />
+        <CustomErrorMessage name="shipping.city" />
       </section>
       <button
         disabled={submitting}
