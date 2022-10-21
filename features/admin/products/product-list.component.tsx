@@ -1,12 +1,15 @@
+import Spinner from "@features/ui/spinner.component";
 import React from "react";
 import ProductItem from "./product-item.component";
 import useProducts from "./useProducts.hook";
 
 export default function ProductList() {
-  const { products } = useProducts();
+  const { products, isLoading } = useProducts();
   return (
     <section>
-      {!products.length ? (
+      {isLoading ? (
+        <Spinner isLoading />
+      ) : !products.length ? (
         <div className="flex justify-center">
           Il n'ya aucun produit dans la base
         </div>

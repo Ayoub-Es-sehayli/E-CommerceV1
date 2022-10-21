@@ -13,7 +13,7 @@ export default function ProductList() {
     setSearchQuery(uiState.dev_products.query as string);
   });
   return (
-    <section className="flex flex-col gap-2 lg:basis-9/12">
+    <section className="flex flex-col gap-2 lg:basis-10/12">
       <div className="flex justify-between">
         <h2 className="font-bold text-xl">
           {searchQuery ? `Résultats pour '${searchQuery}'` : "Nos Produits"}
@@ -42,7 +42,7 @@ export default function ProductList() {
       <section>
         <Hits
           classNames={{
-            list: "grid grid-cols-2 md:grid-cols-4 gap-2 items-stretch",
+            list: "grid grid-cols-2 md:grid-cols-4 gap-2",
           }}
           hitComponent={({ hit }) => <ProductCard item={hit} />}
         />
