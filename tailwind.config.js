@@ -32,7 +32,16 @@ module.exports = {
           600: "hsl(175, 85%, 8%)",
         },
         accent: {
-          DEFAULT: "hsl(356, 79%, 60%)",
+          200: "hsl(356 79% 60% / 0.68)",
+          DEFAULT: "hsl(356 79% 60%)",
+        },
+        info: {
+          200: "hsla(227  84%  65%  0.51)",
+          DEFAULT: "hsla(227  84%  65%  1)",
+        },
+        warning: {
+          200: "hsla(29  90%  50% / 0.5)",
+          DEFAULT: "hsla(29  90%  50% / 1)",
         },
       },
     },
