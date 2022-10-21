@@ -2,6 +2,7 @@ import CustomField from "@features/ui/custom-field.component";
 import { Brand, Category } from "@store/ui.slice";
 import { Field, Form, useFormikContext } from "formik";
 import { FormEvent } from "react";
+import HierarchicalCategorySelect from "./hierachical-category-select.component";
 import { ProductDbModel } from "./product.model";
 
 type Props = {
@@ -14,14 +15,7 @@ export default function ProductForm(props: Props) {
   return (
     <div className="flex flex-col">
       <CustomField label="Nom du Produit" name="name" />
-      <CustomField label="Catégorie" name="category" as="select">
-        <option>Selectionner une Catégorie</option>
-        {categories.map((category) => (
-          <option className="capitalize" key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))}
-      </CustomField>
+      <HierarchicalCategorySelect categories={categories} />
       <CustomField label="Marque" name="brand" as="select">
         <option>Selectionner une Marque</option>
         {brands.map((brand) => (

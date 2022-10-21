@@ -15,7 +15,6 @@ export default function ProductContainer() {
     handleSubmit,
     handleThumbnailReplace,
   } = useProduct();
-  console.log(product);
 
   return (
     <>
@@ -26,6 +25,7 @@ export default function ProductContainer() {
         <Spinner isLoading />
       ) : (
         <Formik
+          enableReinitialize
           initialValues={product}
           onSubmit={handleSubmit}
           validationSchema={ProductSchema}

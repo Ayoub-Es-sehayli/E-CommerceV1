@@ -20,7 +20,7 @@ export default function CustomField(props: Props) {
       </label>
       <Field
         className={
-          "rounded-lg border p-2 focus:outline-2 focus:outline-primary-600 text-lg text-black" +
+          "rounded-lg border p-2 focus:outline-2 focus:outline-primary-600 text-lg text-black " +
           classNames?.field
         }
         {...props}

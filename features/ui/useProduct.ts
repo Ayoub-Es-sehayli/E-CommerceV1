@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import { firebaseStorage } from "services/firebase-service";
+import useCategorySelector from "./useCategorySelector.hook";
 import useThumbnail from "./useThumbnail.hook";
 type ProductBase = {
   name?: string;
@@ -34,6 +35,7 @@ export type ProductCardModel = ProductBase & {
 export default function useProduct(item: Record<string, any>) {
   const dispatch = useAppDispatch();
   const getThumbnail = useThumbnail();
+  const getCategoryById = useCategorySelector();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductCardModel>({
@@ -52,17 +54,18 @@ export default function useProduct(item: Record<string, any>) {
           ? getThumbnail(item.thumbnail)
           : Promise.resolve(product.thumbnail);
       thumbnailPromise.then((url) => {
+        console.log(item.category);
         const product: ProductCardModel = {
           id: item.objectID,
           thumbnail: url,
           name: item.name as string,
           category: item.category.lvl2
-            ? (item.category.lvl2 as string).split(" > ")[2]
+            ? (item.category.lvl2 as string).split(" | ")[2]
             : item.category.lvl1
-            ? item.category.lvl1.split(" > ")[1]
+            ? item.category.lvl1.split(" | ")[1]
             : item.category.lvl0
             ? item.category.lvl0
-            : item.category,
+            : getCategoryById(item.category),
           brand: item.brand as string,
           price: item.price as number,
           salePercentage: item.salePercentage as number,

@@ -36,6 +36,30 @@ export default function useProduct() {
   const getBrandById = useBrandSelector();
   const getThumbnail = useThumbnail();
 
+  useEffect(() => {
+    setIsLoading(true);
+    // Check if new product
+    if (query.id) {
+      if (query.id !== "new") {
+        // Load product
+        getDoc(
+          doc(firebaseDb, "products", query.id as string).withConverter(
+            ProductConverter
+          )
+        )
+          .then((product) => {
+            const productData = product.data();
+            if (productData) {
+              setProduct(productData);
+            }
+          })
+          .catch((error) => console.error(error));
+      }
+    }
+    setIsLoading(false);
+  }, [query]);
+  // Setup Form initialValues and actions
+
   const handleSubmit = useCallback(
     (
       values: ProductDbModel,
