@@ -1,10 +1,14 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
+import { useRouter } from "next/router";
 import { ReactElement, ReactNode } from "react";
 import { InstantSearch } from "react-instantsearch-hooks-web";
 import { Provider } from "react-redux";
-import { algoliaSearchClient } from "services/algolia-service";
+import {
+  algoliaRoutingConfig,
+  algoliaSearchClient,
+} from "services/algolia-service";
 import { store } from "store";
 import "../styles/globals.css";
 
@@ -18,11 +22,12 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const router = useRouter();
   return (
     <InstantSearch
       searchClient={algoliaSearchClient}
       indexName="dev_products"
-      routing
+      routing={algoliaRoutingConfig(router)}
     >
       <Provider store={store}>
         {getLayout(<Component {...pageProps} />)}

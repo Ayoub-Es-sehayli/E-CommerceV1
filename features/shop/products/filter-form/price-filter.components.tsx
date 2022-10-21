@@ -7,10 +7,11 @@ export default function PriceFilter() {
       <RangeInput
         attribute="price"
         min={1}
+        max={9999}
         classNames={{
-          form: "flex justify-around items-center",
+          form: "flex items-center gap-1",
           submit: "bg-white text-black p-1 rounded-lg",
-          input: "p-1 rounded-xl",
+          input: "p-1 rounded-xl text-black w-[7ch]",
         }}
       />
     </section>

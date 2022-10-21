@@ -8,7 +8,7 @@ type Props = {
 export default function FilterForm({ className }: Props) {
   return (
     <aside
-      className={`lg:flex lg:basis-3/12 p-4 flex-col space-y-2 bg-primary-400 text-white h-min rounded-lg ${className}`}
+      className={`lg:flex p-4 flex-col space-y-2 bg-primary-400 text-white h-min rounded-lg ${className}`}
     >
       <span className="flex justify-between w-full">
         <h3 className="font-bold text-xl">Filtrer</h3>

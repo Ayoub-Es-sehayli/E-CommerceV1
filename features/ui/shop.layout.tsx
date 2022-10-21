@@ -2,8 +2,10 @@ import { PropsWithChildren } from "react";
 import Footer from "./footer.component";
 import NavBar from "./navbar/navbar.component";
 import { SideBar } from "./sidebar.component";
+import useUILoaders from "./useUILoaders.hook";
 
 export default function ShopLayout({ children }: PropsWithChildren) {
+  const { isLoading } = useUILoaders();
   return (
     <div className="daisy-drawer">
       <input id="nav-drawer" type="checkbox" className="daisy-drawer-toggle" />
