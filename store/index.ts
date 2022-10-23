@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import AdminSlice from "./admin.slice";
 import CartSlice from "./cart.slice";
 import SessionSlice from "./session.slice";
 import UISlice from "./ui.slice";
@@ -7,6 +8,7 @@ export const store = configureStore({
     SessionSlice,
     CartSlice,
     UISlice,
+    AdminSlice,
   },
 });
 
