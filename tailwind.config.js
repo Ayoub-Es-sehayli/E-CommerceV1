@@ -36,12 +36,12 @@ module.exports = {
           DEFAULT: "hsl(356 79% 60%)",
         },
         info: {
-          200: "hsla(227  84%  65%  0.51)",
-          DEFAULT: "hsla(227  84%  65%  1)",
+          200: "hsl(227  84%  65% / 0.5)",
+          DEFAULT: "hsl(227  84%  65% / 1)",
         },
         warning: {
-          200: "hsla(29  90%  50% / 0.5)",
-          DEFAULT: "hsla(29  90%  50% / 1)",
+          200: "hsl(29  90%  50% / 0.5)",
+          DEFAULT: "hsl(29  90%  50% / 1)",
         },
       },
     },
