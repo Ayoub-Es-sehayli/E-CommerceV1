@@ -7,7 +7,7 @@ type ItemProps = {
 
 function CategoryItem({ category }: ItemProps) {
   return (
-    <option className="text-sm pl-2" value={category.path}>
+    <option className="italic" value={category.path}>
       {category.name}
     </option>
   );
@@ -26,19 +26,27 @@ export default function HierarchicalCategorySelect({
       as="select"
       classNames={{ field: "capitalize" }}
     >
-      <option key={0}>Selectionner une Catégorie</option>
+      <option key={0} disabled>
+        Selectionner une Catégorie
+      </option>
       {categories.map((category) => (
         <>
-          <option
-            className="capitalize"
-            key={category.id}
-            value={category.path}
-          >
+          <option className="font-bold" key={category.id} value={category.path}>
             {category.name}
           </option>
           {category.subcategories && category.subcategories.length
             ? category.subcategories.map((subcategory) => (
-                <CategoryItem key={subcategory.id} category={subcategory} />
+                <>
+                  <CategoryItem key={subcategory.id} category={subcategory} />
+                  {subcategory.subcategories && subcategory.subcategories.length
+                    ? subcategory.subcategories.map((sub) => (
+                        <CategoryItem
+                          key={sub.id}
+                          category={{ ...sub, name: "- " + sub.name }}
+                        />
+                      ))
+                    : null}
+                </>
               ))
             : null}
         </>
