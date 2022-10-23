@@ -32,8 +32,6 @@ export default function useProduct() {
     thumbnailUrl: undefined,
   });
   const { brands, categories } = useAppSelector((state) => state.UISlice);
-  const getCategoryById = useCategorySelector();
-  const getBrandById = useBrandSelector();
   const getThumbnail = useThumbnail();
 
   useEffect(() => {

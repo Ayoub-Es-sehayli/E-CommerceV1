@@ -10,9 +10,9 @@ export default function ProductsContainer() {
       </Head>
       <div className="flex flex-col gap-2">
         <header className="flex justify-between items-center">
-          <h2 className="text-primary-400 font-bold text-xl font-serif">
+          <h1 className="text-primary-400 font-bold text-xl font-serif">
             Produits
-          </h2>
+          </h1>
           <Link href="/admin/product/new">
             <a className="bi bi-plus p-2 bg-primary-200 text-white rounded-lg">
               Nouveau

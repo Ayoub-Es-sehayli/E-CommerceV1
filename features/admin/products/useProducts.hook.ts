@@ -6,9 +6,7 @@ import {
   limit,
   orderBy,
   query as dbQuery,
-  query,
   QueryConstraint,
-  startAfter,
   startAt,
 } from "firebase/firestore";
 import { useRouter } from "next/router";

@@ -54,7 +54,6 @@ export default function useProduct(item: Record<string, any>) {
           ? getThumbnail(item.thumbnail)
           : Promise.resolve(product.thumbnail);
       thumbnailPromise.then((url) => {
-        console.log(item.category);
         const product: ProductCardModel = {
           id: item.objectID,
           thumbnail: url,
