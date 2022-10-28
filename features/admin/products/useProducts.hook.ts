@@ -26,7 +26,7 @@ export default function useProducts() {
   useEffect(() => {
     setIsLoading(true);
     const newProductList: ProductItemModel[] = [];
-    const queryConstraints: QueryConstraint[] = [orderBy("createdAt")];
+    const queryConstraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
     if (routerQuery.page && (routerQuery.page as string) !== "1") {
       const currentPage: number = parseInt(routerQuery.page as string);
       queryConstraints.push(startAt(currentPage * 15));
