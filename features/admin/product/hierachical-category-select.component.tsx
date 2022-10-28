@@ -26,9 +26,7 @@ export default function HierarchicalCategorySelect({
       as="select"
       classNames={{ field: "capitalize" }}
     >
-      <option key={0} disabled>
-        Selectionner une Catégorie
-      </option>
+      <option disabled>Selectionner une Catégorie</option>
       {categories.map((category) => (
         <>
           <option className="font-bold" key={category.id} value={category.path}>

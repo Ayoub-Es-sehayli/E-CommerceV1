@@ -16,15 +16,17 @@ export default function ProductList() {
       ) : (
         <table className="daisy-table w-full text-left">
           <thead>
-            <th className="max-w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">
-              Produit
-            </th>
-            <th>Marque</th>
-            <th>Catégorie</th>
-            <th>Prix</th>
-            <th>Date d'arrivage</th>
-            <th>Solde</th>
-            <th></th>
+            <tr>
+              <th className="max-w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">
+                Produit
+              </th>
+              <th>Marque</th>
+              <th>Catégorie</th>
+              <th>Prix</th>
+              <th>Date d'arrivage</th>
+              <th>Solde</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             {products.map((item) => (
