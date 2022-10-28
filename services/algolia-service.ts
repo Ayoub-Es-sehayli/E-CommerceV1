@@ -1,11 +1,14 @@
+import algoliaadminsearch from "algoliasearch";
 import algoliasearch from "algoliasearch/lite";
 import { NextRouter, useRouter } from "next/router";
-const { history } = require("instantsearch.js/es/lib/routers");
-const { simple } = require("instantsearch.js/es/lib/stateMappings");
 
 export const algoliaSearchClient = algoliasearch(
   process.env.ALGOLIA_APP_ID!,
   process.env.ALGOLIA_API_KEY!
+);
+export const algoliaAdminClient = algoliaadminsearch(
+  process.env.ALGOLIA_APP_ID!,
+  process.env.ALGOLIA_ADMIN_KEY!
 );
 const stateMapping = {
   stateToRoute: (uiState: any) => {
