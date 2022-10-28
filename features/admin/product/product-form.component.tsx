@@ -25,6 +25,7 @@ export default function ProductForm(props: Props) {
         ))}
       </CustomField>
       <CustomField label="Prix" name="price" type="number" />
+      <CustomField label="Stock" name="quantity" type="number" />
       <CustomField
         label="Solde %"
         name="salePercentage"
