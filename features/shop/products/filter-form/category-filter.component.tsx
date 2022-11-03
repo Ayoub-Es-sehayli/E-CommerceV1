@@ -13,6 +13,7 @@ export default function CategoryFilter() {
           selectedItemLink: "font-bold text-light",
         }}
         separator=" | "
+        sortBy={["count:desc"]}
       />
     </section>
   );
