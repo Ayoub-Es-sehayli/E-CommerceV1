@@ -26,7 +26,16 @@ const OrdersConverter: FirestoreDataConverter<OrderDbModel> = {
           .toDate()
           .toLocaleDateString("fr-fr"),
       },
-      history: data.history,
+      history: data.history
+        ? data.history.map((item: any) => {
+            return {
+              type: item.type,
+              date: (item.date as Timestamp)
+                .toDate()
+                .toLocaleDateString("fr-fr"),
+            };
+          })
+        : undefined,
       total: data.total,
     };
   },

@@ -49,7 +49,11 @@ export default function useCart() {
           type: EOrderStatus.Ordered,
           date: Timestamp.fromDate(new Date()),
         };
-        await addDoc(collection(firebaseDb, "orders"), { ...values, total });
+        await addDoc(collection(firebaseDb, "orders"), {
+          ...values,
+          total,
+          history: [values.status],
+        });
         resetForm({
           values: { ...initialValues, items: [] },
         });
