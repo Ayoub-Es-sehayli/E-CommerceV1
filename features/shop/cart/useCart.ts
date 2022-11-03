@@ -58,6 +58,8 @@ export default function useCart() {
           values: { ...initialValues, items: [] },
         });
         dispatch(clearCartItems());
+        alert("Votre commande a été passée avec succès!");
+        router.push("/shop");
       }
     } catch (error) {
       console.error(error);
