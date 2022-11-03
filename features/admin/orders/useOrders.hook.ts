@@ -36,8 +36,6 @@ export default function useOrders() {
   useEffect(() => {
     setIsLoading(true);
     const nextMonth = moment(startMonth).add(1, "months").toDate();
-    console.log(startMonth);
-    console.log(nextMonth);
 
     const queryConstraints: QueryConstraint[] = [
       where("status.date", ">=", Timestamp.fromDate(startMonth)),

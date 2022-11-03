@@ -11,6 +11,7 @@ type Props = HTMLProps<HTMLInputElement> & {
 };
 export default function CustomField(props: Props) {
   const { label, name, classNames, children } = props;
+  const htmlProps = props as HTMLProps<HTMLInputElement>;
   return (
     <span
       className={classNames?.root ? classNames?.root : "flex flex-col gap-1"}
@@ -23,7 +24,7 @@ export default function CustomField(props: Props) {
           "rounded-lg border p-2 focus:outline-2 focus:outline-primary-600 text-lg text-black " +
           classNames?.field
         }
-        {...props}
+        {...htmlProps}
       >
         {children}
       </Field>

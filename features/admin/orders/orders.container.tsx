@@ -12,7 +12,7 @@ export default function OrdersContainer() {
   return (
     <>
       <Head>
-        <title>Administration - Liste des Produits</title>
+        <title>Administration - Liste des Commandes</title>
       </Head>
       <div className="flex flex-col gap-0">
         <header className="flex flex-col gap-1">
