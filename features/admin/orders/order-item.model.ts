@@ -22,6 +22,7 @@ export type OrderListRowModel = {
 export type OrderItemModel = {
   id: string;
   quantity: number;
+  name: string;
 };
 export type OrderStatusModel = {
   date: string;
@@ -42,4 +43,5 @@ export type OrderDbModel = {
   status: OrderStatusModel;
   history?: OrderStatusModel[];
   items: OrderItemModel[];
+  total: number;
 };

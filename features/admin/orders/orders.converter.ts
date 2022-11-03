@@ -27,6 +27,7 @@ const OrdersConverter: FirestoreDataConverter<OrderDbModel> = {
           .toLocaleDateString("fr-fr"),
       },
       history: data.history,
+      total: data.total,
     };
   },
 };
