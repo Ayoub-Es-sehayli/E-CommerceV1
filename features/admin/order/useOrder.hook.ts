@@ -1,13 +1,10 @@
 import EOrderStatus from "@features/ui/order-status.enum";
 import useStatusSelector from "@features/ui/useStatusSelector.hook";
 import { useAppSelector } from "@store/hooks";
-import { doc, getDoc, getDocs, Timestamp, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { firebaseDb } from "services/firebase-service";
-import { OrderItemModel } from "../orders/order-item.model";
-import { ProductConverter } from "../product/product.converter";
-import { ProductBaseModel } from "../product/product.schema";
 import { HistoryItemModel, OrderPageModel } from "./order.model";
 
 export default function useOrder() {

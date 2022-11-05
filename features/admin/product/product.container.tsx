@@ -1,9 +1,9 @@
 import ProductCard from "@features/ui/product-card.component";
+import { ProductSchema } from "@features/ui/product.schema";
 import Spinner from "@features/ui/spinner.component";
 import { Form, Formik } from "formik";
 import Head from "next/head";
 import ProductForm from "./product-form.component";
-import { ProductSchema } from "./product.schema";
 import useProduct from "./useProduct.hook";
 
 export default function ProductContainer() {

@@ -1,4 +1,4 @@
-import { ProductBaseModel } from "./product.schema";
+import { ProductBaseModel } from "@features/ui/product.schema";
 
 export type ProductDbModel = ProductBaseModel & {
   objectID?: string;

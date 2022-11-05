@@ -1,3 +1,5 @@
+import { ProductConverter } from "@features/ui/product.converter";
+import { ProductBaseModel } from "@features/ui/product.schema";
 import useBrandSelector from "@features/ui/useBrandSelector.hook";
 import useCategorySelector from "@features/ui/useCategorySelector.hook";
 import useThumbnail from "@features/ui/useThumbnail.hook";
@@ -16,9 +18,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { algoliaAdminClient } from "services/algolia-service";
 import { firebaseDb, firebaseStorage } from "services/firebase-service";
-import { ProductConverter } from "./product.converter";
 import { ProductDbModel } from "./product.model";
-import { ProductBaseModel } from "./product.schema";
 
 export default function useProduct() {
   const { query, push, replace } = useRouter();
