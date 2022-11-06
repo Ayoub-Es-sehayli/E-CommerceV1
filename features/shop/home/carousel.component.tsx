@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { useState } from "react";
 
-function CarouselItem({ id, src }: { id: string; src: string }) {
+type ItemProps = {
+  id: string;
+  src: string;
+};
+function CarouselItem({ id, src }: ItemProps) {
   return (
     <Link href="">
       <a id={id} className="daisy-carousel-item w-full">
@@ -10,20 +14,16 @@ function CarouselItem({ id, src }: { id: string; src: string }) {
     </Link>
   );
 }
-export function Carousel() {
-  const items: { id: string; src: string }[] = [
-    { id: "slide1", src: "https://placeimg.com/390/234/nature" },
-    { id: "slide2", src: "https://placeimg.com/390/234/arch" },
-    { id: "slide3", src: "https://placeimg.com/390/234/animals" },
-    { id: "slide4", src: "https://placeimg.com/390/234/people" },
-    { id: "slide5", src: "https://placeimg.com/390/234/tech" },
-  ];
+type CarouselProps = {
+  annoucements: ItemProps[];
+};
+export function Carousel({ annoucements: items }: CarouselProps) {
   const [current, setCurrent] = useState<number>(0);
   return (
     <>
       <div className="daisy-carousel relative rounded-t-2xl w-full lg:hidden">
         {items.map((item) => (
-          <CarouselItem {...item} />
+          <CarouselItem key={item.id} {...item} />
         ))}
       </div>
       <div className="hidden lg:flex relative rounded-t-2xl w-full ">
