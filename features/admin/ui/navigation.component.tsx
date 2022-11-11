@@ -33,6 +33,11 @@ export default function Navigation() {
   const items: NavItemProps[] = [
     { href: "/admin/orders", children: "Commandes", className: "bi-shop" },
     { href: "/admin/products", children: "Produits", className: "bi-boxes" },
+    {
+      href: "/admin/annoucements",
+      children: "Annonces",
+      className: "bi-megaphone",
+    },
   ];
   return (
     <nav className="bg-white rounded-lg w-1/5 p-4">
