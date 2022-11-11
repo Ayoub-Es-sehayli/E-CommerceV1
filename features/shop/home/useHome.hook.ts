@@ -19,7 +19,7 @@ export default function useHome() {
   const [annoucements, setAnnoucements] = useState<
     { id: string; src: string }[]
   >([]);
-  const getThumbnail = useThumbnail();
+  const getThumbnail = useThumbnail("annoucements");
 
   try {
     // Load Annoucements
@@ -62,6 +62,7 @@ export default function useHome() {
     useEffect(() => {
       const products: ProductCardModel[] = [];
       const queryConstraints: QueryConstraint[] = [
+        orderBy("salePercentage", "desc"),
         orderBy("createdAt", "desc"),
         where("salePercentage", ">", 0.0),
         limit(5),
