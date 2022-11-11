@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { firebaseStorage } from "services/firebase-service";
 import { string } from "yup";
 
-export default function useThumbnail() {
+export default function useThumbnail(folder?: string) {
   const getThumbnail = useCallback((thumbnail: string) => {
     let result = Promise.resolve(thumbnail as string);
     try {
@@ -13,7 +13,9 @@ export default function useThumbnail() {
       } else if (thumbnail.includes("data:image")) {
         result = Promise.resolve(thumbnail as string);
       } else {
-        result = getDownloadURL(ref(firebaseStorage, `/products/${thumbnail}`));
+        result = getDownloadURL(
+          ref(firebaseStorage, `/${folder ? folder : "products"}/${thumbnail}`)
+        );
       }
     } catch (error) {
     } finally {
