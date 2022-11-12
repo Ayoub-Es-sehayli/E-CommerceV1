@@ -59,7 +59,7 @@ export default function useProduct(item: Record<string, any>) {
           thumbnail: url,
           name: item.name as string,
           category: item.category.lvl2
-            ? (item.category.lvl2 as string).split(" | ")[2]
+            ? item.category.lvl2.split(" | ")[2]
             : item.category.lvl1
             ? item.category.lvl1.split(" | ")[1]
             : item.category.lvl0

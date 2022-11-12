@@ -7,7 +7,7 @@ export default function ProductCard({ item }: Props) {
   const { product, isLoading, AddToCart, addingToCart } = useProduct(item);
 
   return (
-    <article className="relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
+    <article className="max-w-[20ch] relative flex flex-col basis-full pt-4 pb-3 px-3 space-y-2 border border-primary-400 rounded-lg">
       <figure className="h-44 w-auto place-self-center flex items-center">
         <img
           src={product.thumbnail}
