@@ -28,11 +28,11 @@ export default function NavBar() {
         </Link>
         <SearchBar />
         <div className="hidden lg:flex gap-2">
-          <Link href="#">
+          {/* <Link href="#">
             <a>
               <i className="bi bi-heart " />
             </a>
-          </Link>
+          </Link> */}
           <Link href="/shop/cart">
             <a>
               <i className="bi bi-bag " />

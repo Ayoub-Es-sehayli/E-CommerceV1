@@ -67,14 +67,14 @@ export function SideBar() {
               </a>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link href="">
               <a className="flex gap-2 bg-transparent focus:bg-light px-2 py-1 rounded-lg">
                 <i className="bi bi-heart text-lg" />
                 <span>Mes Favories</span>
               </a>
             </Link>
-          </li>
+          </li> */}
           <li>
             {isLoggedIn ? (
               <button
