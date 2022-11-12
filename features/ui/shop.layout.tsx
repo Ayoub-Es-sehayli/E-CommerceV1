@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import Footer from "./footer.component";
 import NavBar from "./navbar/navbar.component";
-import { SideBar } from "./sidebar.component";
+import { SideBar } from "./navbar/sidebar.component";
 import useUILoaders from "./useUILoaders.hook";
 
 export default function ShopLayout({ children }: PropsWithChildren) {
