@@ -23,16 +23,18 @@ export default function ProductCard({ item }: Props) {
       >
         {product.salePercentage} %
       </span>
-      <i
+      {/* <i
         className={`absolute top-1 right-2 bi ${
           product.liked ? "bi-heart-fill text-accent" : "bi-heart"
         }`}
-      />
+      />*/}
       <header>
         <h3 className="font-bold max-w-[20ch] overflow-hidden whitespace-nowrap text-ellipsis">
           {product.name}
         </h3>
-        <p className="text-grey-400 capitalize">{product.category}</p>
+        <p className="text-grey-400 capitalize overflow-hidden whitespace-nowrap text-ellipsis">
+          {product.category}
+        </p>
       </header>
       <footer className="flex place-items-center justify-between font-bold">
         <span
