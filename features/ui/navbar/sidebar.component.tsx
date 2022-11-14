@@ -1,8 +1,9 @@
-import useSession from "@features/session/useSession.hook";
 import Link from "next/link";
+import NavItem from "./sidebar-navitem.component";
+import useNav from "./useNav.hook";
 
 export function SideBar() {
-  const { isLoggedIn, Logout } = useSession();
+  const { isLoggedIn, categories, Logout } = useNav();
   return (
     <section className="daisy-drawer-side lg:hidden text-base capitalize font-bold">
       <label htmlFor="nav-drawer" className="daisy-drawer-overlay"></label>
@@ -10,7 +11,7 @@ export function SideBar() {
         <label
           htmlFor="nav-drawer"
           className={
-            "flex gap-1  p-4 align-center justify-left border-none bg-primary-400  text-white"
+            "flex gap-1 p-4 align-center justify-left items-center border-none bg-primary-400 text-white"
           }
         >
           <i className="bi bi-list text-xl" />
@@ -22,32 +23,9 @@ export function SideBar() {
           aria-label="Primary"
           className="flex flex-col mt-2 space-y-2 px-2 align-middle"
         >
-          <li
-            tabIndex={0}
-            className="daisy-collapse flex flex-col focus-within:bg-light rounded-lg p-2"
-          >
-            <input type="checkbox" className="peer" />
-            <div className="flex justify-between items-center peer-checked:active:bg-light">
-              <Link href="">
-                <a className="daisy-collapse-title bg-transparent px-2 py-1">
-                  visage
-                </a>
-              </Link>
-              <i className="daisy-collapse-open bi-chevron-down" />
-            </div>
-            <ul className="daisy-collapse-content">
-              <li className="bg-transparent hover:bg-grey-200 ml-2 px-2 py-1 border-l-4 border-primary-200">
-                <Link href="">
-                  <a>soin peau 1</a>
-                </Link>
-              </li>
-              <li className="bg-transparent hover:bg-grey-200 ml-2 px-2 py-1 border-l-4 border-primary-200">
-                <Link href="">
-                  <a>soin peau 2</a>
-                </Link>
-              </li>
-            </ul>
-          </li>
+          {categories.map((category) => (
+            <NavItem key={category.id} category={category} />
+          ))}
         </ul>
         {/* User Controls */}
         <ul role="list" aria-label="User" className="p-2">

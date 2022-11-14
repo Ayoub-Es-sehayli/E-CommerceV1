@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import NavItem from "./navitem.component";
 import SearchBar from "./searchbar.component";
+import useNav from "./useNav.hook";
 
 export default function NavBar() {
-  const { isLoggedIn, Logout } = useSession();
+  const { isLoggedIn, categories, Logout } = useNav();
   return (
     <nav className="text-primary-400 font-serif text-lg">
       <section className="flex w-full justify-between items-center p-4 lg:p-2">
@@ -55,12 +56,14 @@ export default function NavBar() {
       </section>
       <section
         className={
-          "hidden lg:flex h-auto w-auto justify-center text-base capitalize font-bold"
+          "hidden lg:flex w-auto justify-center text-base capitalize font-bold"
         }
       >
         {/* Categories */}
         <ul role="list" aria-label="Primary">
-          <NavItem />
+          {categories.map((category) => (
+            <NavItem key={category.id} category={category} />
+          ))}
         </ul>
       </section>
     </nav>
