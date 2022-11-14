@@ -1,10 +1,17 @@
+import useSession from "@features/session/useSession.hook";
 import useUILoaders from "@features/ui/useUILoaders.hook";
+import { useRouter } from "next/router";
 import { PropsWithChildren } from "react";
 import Header from "./header.component";
 import Navigation from "./navigation.component";
 
 export default function AdminLayout({ children }: PropsWithChildren) {
   const { isLoading } = useUILoaders();
+  const { isLoggedIn } = useSession();
+  const router = useRouter();
+  if (!isLoggedIn) {
+    router.replace("/session");
+  }
   return (
     <div className="h-screen bg-light-200 font-serif">
       <Header />
