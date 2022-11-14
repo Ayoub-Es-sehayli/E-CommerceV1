@@ -25,7 +25,7 @@ export default function useHome() {
     // Load Annoucements
     useEffect(() => {
       const newAnnoucements: typeof annoucements = [];
-      getDocs(query(collection(firebaseDb, "products"))).then((result) => {
+      getDocs(query(collection(firebaseDb, "annoucements"))).then((result) => {
         result.forEach((annoucement) => {
           const data = annoucement.data();
           getThumbnail(data.src).then((thumbnail) => {
@@ -37,6 +37,7 @@ export default function useHome() {
         });
         setAnnoucements(newAnnoucements);
       });
+      console.log(newAnnoucements);
     }, []);
     // Load Latest Products
     useEffect(() => {
@@ -53,7 +54,8 @@ export default function useHome() {
         ).withConverter(ProductConverter)
       ).then((result) => {
         result.forEach((product) => {
-          products.push(product);
+          const productData = product.data();
+          products.push({ ...productData, id: product.id });
         });
         setLatest(products);
       });
@@ -74,7 +76,8 @@ export default function useHome() {
         ).withConverter(ProductConverter)
       ).then((result) => {
         result.forEach((product) => {
-          products.push(product);
+          const productData = product.data();
+          products.push({ ...productData, id: product.id });
         });
         setOnSale(products);
       });
