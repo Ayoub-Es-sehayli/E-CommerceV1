@@ -18,7 +18,7 @@ const stateMapping = {
       category: indexUiState.hierarchicalMenu
         ? indexUiState.hierarchicalMenu["category.lvl0"]
         : indexUiState.hierarchicalMenu,
-      brand: indexUiState.refinementList?.brand,
+      brand: indexUiState.refinementList ?? indexUiState.refinementList.brand,
       price: indexUiState.range?.price,
       // page: indexUiState.page,
     };
@@ -28,7 +28,7 @@ const stateMapping = {
       ["dev_products"]: {
         query: routeState.q,
         hierarchicalMenu: {
-          "category.lv0": routeState.category,
+          "category.lvl0": routeState.category,
         },
         refinementList: {
           brand: routeState.brand,

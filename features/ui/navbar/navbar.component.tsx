@@ -1,12 +1,12 @@
-import useSession from "@features/session/useSession.hook";
 import Image from "next/image";
 import Link from "next/link";
+import { UseHierarchicalMenuProps } from "react-instantsearch-hooks-web";
 import NavItem from "./navitem.component";
 import SearchBar from "./searchbar.component";
 import useNav from "./useNav.hook";
 
-export default function NavBar() {
-  const { isLoggedIn, categories, Logout } = useNav();
+export default function NavBar(algoliaProps: UseHierarchicalMenuProps) {
+  const { isLoggedIn, categories, refine, Logout } = useNav(algoliaProps);
   return (
     <nav className="text-primary-400 font-serif text-lg">
       <section className="flex w-full justify-between items-center p-4 lg:p-2">
@@ -62,7 +62,7 @@ export default function NavBar() {
         {/* Categories */}
         <ul role="list" aria-label="Primary">
           {categories.map((category) => (
-            <NavItem key={category.id} category={category} />
+            <NavItem key={category.id} category={category} refine={refine} />
           ))}
         </ul>
       </section>

@@ -11,12 +11,16 @@ export default function ShopLayout({ children }: PropsWithChildren) {
       <input id="nav-drawer" type="checkbox" className="daisy-drawer-toggle" />
       <div className="daisy-drawer-content h-screen flex flex-col justify-between">
         <header>
-          <NavBar />
+          <NavBar
+            attributes={["category.lvl0", "category.lvl1", "category.lvl2"]}
+          />
         </header>
         <main className="container mx-auto mb-4 lg:my-4 px-4">{children}</main>
         <Footer />
       </div>
-      <SideBar />
+      <SideBar
+        attributes={["category.lvl0", "category.lvl1", "category.lvl2"]}
+      />
     </div>
   );
 }

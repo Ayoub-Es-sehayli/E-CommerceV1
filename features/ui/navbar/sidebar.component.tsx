@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { UseHierarchicalMenuProps } from "react-instantsearch-hooks-web";
 import NavItem from "./sidebar-navitem.component";
 import useNav from "./useNav.hook";
 
-export function SideBar() {
-  const { isLoggedIn, categories, Logout } = useNav();
+export function SideBar(algoliaProps: UseHierarchicalMenuProps) {
+  const { isLoggedIn, categories, refine, Logout } = useNav(algoliaProps);
   return (
     <section className="daisy-drawer-side lg:hidden text-base capitalize font-bold">
       <label htmlFor="nav-drawer" className="daisy-drawer-overlay"></label>
@@ -24,7 +25,7 @@ export function SideBar() {
           className="flex flex-col mt-2 space-y-2 px-2 align-middle"
         >
           {categories.map((category) => (
-            <NavItem key={category.id} category={category} />
+            <NavItem key={category.id} category={category} refine={refine} />
           ))}
         </ul>
         {/* User Controls */}

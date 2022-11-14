@@ -4,16 +4,17 @@ import { useCallback } from "react";
 import { useInstantSearch } from "react-instantsearch-hooks-web";
 type Props = {
   category: Category;
+  refine: (value: string) => void;
   // & {
   //   prevTarget?: string;
   // level: number
   // };
 };
-function NavSubItem({ category }: Props) {
+function NavSubItem({ category, refine }: Props) {
   return (
     <li className="bg-transparent hover:bg-grey-200 px-2 py-1 text-base">
-      <Link href={`/shop/products?category%5B0%5D=${category.name}`}>
-        <a>{category.name}</a>
+      <Link href="/shop/products">
+        <a onClick={() => refine(category.name)}>{category.name}</a>
       </Link>
       {/* {category.subcategories && category.subcategories.length ? (
         <ul className="text-sm">
@@ -36,12 +37,15 @@ function NavSubItem({ category }: Props) {
     </li>
   );
 }
-export default function NavItem({ category }: Props) {
+export default function NavItem({ category, refine }: Props) {
   return (
     <li className="daisy-dropdown daisy-dropdown-hover text-lg">
       <label tabIndex={0}>
-        <Link href={`/shop/products?category%5B0%5D=${category.name}`}>
-          <a className=" bg-transparent hover:bg-light p-1 m-1 lg:rounded-lg">
+        <Link href="/shop/products">
+          <a
+            onClick={() => refine(category.name)}
+            className=" bg-transparent hover:bg-light p-1 m-1 lg:rounded-lg"
+          >
             {category.name}
           </a>
         </Link>
@@ -54,6 +58,7 @@ export default function NavItem({ category }: Props) {
           {category.subcategories.map((sub) => (
             <NavSubItem
               key={sub.id}
+              refine={refine}
               category={{
                 ...sub,
                 // prevTarget: `category${encodeURIComponent(
