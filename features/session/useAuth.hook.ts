@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { login, logout } from "@store/session.slice";
 import {
+  ActionCodeSettings,
   GoogleAuthProvider,
   isSignInWithEmailLink,
   sendSignInLinkToEmail,
@@ -11,11 +12,7 @@ import {
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import {
-  emailLinkConfig,
-  firebaseAuth,
-  googleProvider,
-} from "services/firebase-service";
+import { firebaseAuth } from "services/firebase-service";
 import useSession from "./useSession.hook";
 interface Credentials {
   email: string;
@@ -43,6 +40,7 @@ export default function useAuth() {
     if (isLoggedIn) router.push("/shop");
   }, [isLoggedIn]);
   const handleGoogleSignIn = async () => {
+    const googleProvider = new GoogleAuthProvider();
     await signInWithPopup(firebaseAuth, googleProvider)
       .then((result) => {
         if (result) {
@@ -69,6 +67,10 @@ export default function useAuth() {
     { setSubmitting }: FormikHelpers<Credentials>
   ) => {
     setSubmitting(true);
+    const emailLinkConfig: ActionCodeSettings = {
+      url: "http://localhost:3001/session/login?method=email",
+      handleCodeInApp: true,
+    };
     await sendSignInLinkToEmail(firebaseAuth, email, emailLinkConfig);
     localStorage.setItem("emailForSignIn", email);
     setEmailSent(true);

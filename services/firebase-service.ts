@@ -1,5 +1,4 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
 import {
   ActionCodeSettings,
   getAuth,
@@ -9,6 +8,7 @@ import {
   signInWithRedirect,
   signOut,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig: FirebaseOptions = {
@@ -27,18 +27,6 @@ const firebaseDb = getFirestore(firebaseApp);
 const firebaseAuth = getAuth(firebaseApp);
 firebaseAuth.languageCode = "fr";
 
-const googleProvider = new GoogleAuthProvider();
-const emailLinkConfig: ActionCodeSettings = {
-  url: "http://localhost:3001/session/login?method=email",
-  handleCodeInApp: true,
-};
-
 const firebaseStorage = getStorage(firebaseApp);
 
-export {
-  firebaseAuth,
-  firebaseDb,
-  firebaseStorage,
-  googleProvider,
-  emailLinkConfig,
-};
+export { firebaseAuth, firebaseDb, firebaseStorage };
