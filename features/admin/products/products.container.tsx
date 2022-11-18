@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
 import ProductList from "./product-list.component";
+import useProducts from "./useProducts.hook";
 
 export default function ProductsContainer() {
+  const { products, isLoading } = useProducts();
   return (
     <>
       <Head>
@@ -19,7 +21,7 @@ export default function ProductsContainer() {
             </a>
           </Link>
         </header>
-        <ProductList />
+        <ProductList products={products} isLoading={isLoading} />
       </div>
     </>
   );
