@@ -1,15 +1,6 @@
 import useBrandSelector from "@features/ui/useBrandSelector.hook";
 import useCategorySelector from "@features/ui/useCategorySelector.hook";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  ColumnDef,
-  createColumnHelper,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  RowSelection,
-  useReactTable,
-} from "@tanstack/react-table";
+import { useQuery } from "@tanstack/react-query";
 import {
   collection,
   getDocs,
@@ -17,10 +8,7 @@ import {
   orderBy,
   query as dbQuery,
   QueryConstraint,
-  startAt,
 } from "firebase/firestore";
-import Link from "next/link";
-import { useEffect, useMemo } from "react";
 import { firebaseDb } from "services/firebase-service";
 import { ProductItemModel } from "./product-item.model";
 import { ProductListItemConverter } from "./products.converter";
@@ -31,11 +19,6 @@ export default function useProducts() {
 
   const { data: products, isLoading } = useQuery(["product-list"], () => {
     const queryConstraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
-    // if (table && table.getState()) {
-    //   const currentPage: number = table.getState().pagination.pageIndex + 1;
-
-    //   queryConstraints.push(startAt(currentPage * 15));
-    // }
     queryConstraints.push(limit(15));
     const productsQuery = dbQuery(
       collection(firebaseDb, "products"),
@@ -54,12 +37,6 @@ export default function useProducts() {
       }
       return [];
     });
-  });
-  const qs = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: () => {
-      return qs.invalidateQueries({ queryKey: ["product-list"] });
-    },
   });
   if (!products) return { products: [], isLoading };
 
