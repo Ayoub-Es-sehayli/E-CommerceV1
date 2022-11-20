@@ -1,37 +1,50 @@
 import EOrderStatus from "@features/ui/order-status.enum";
+import { flexRender } from "@tanstack/react-table";
 import React from "react";
 import OrderItem from "./order-item.component";
 import { OrderListRowModel } from "./order-item.model";
+import useOrderTable from "./useOrderTable.hook";
 
 type ListProps = {
   orders: OrderListRowModel[];
-  getStatusName: (status: EOrderStatus) => string;
+  isLoading: boolean;
 };
-export default function OrdersList({ orders, getStatusName }: ListProps) {
+export default function OrdersList({ orders, isLoading }: ListProps) {
+  const table = useOrderTable(orders, isLoading);
   return (
-    <section className="text-left px-2">
-      <header className="flex justify-left gap-12 py-2 font-bold">
-        <span className="w-[22ch]">Code</span>
-        <span className="w-[25ch]">Client</span>
-        <span className="w-[10ch]">Livraison</span>
-        <span className="w-[10ch]">Status</span>
-        <span>Date Commande</span>
-      </header>
-      <div>
-        {!orders.length ? (
-          <div className="flex justify-center">
-            Il n'ya aucun produit dans la base
-          </div>
-        ) : (
-          orders.map((order) => (
-            <OrderItem
-              key={order.id}
-              order={order}
-              getStatusName={getStatusName}
-            />
-          ))
-        )}
-      </div>
-    </section>
+    <table className="daisy-table w-full text-left m-4">
+      <thead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              return (
+                <th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder ? null : (
+                    <div>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </div>
+                  )}
+                </th>
+              );
+            })}
+          </tr>
+        ))}
+      </thead>
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id} className="py-1">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+      <tfoot></tfoot>
+    </table>
   );
 }

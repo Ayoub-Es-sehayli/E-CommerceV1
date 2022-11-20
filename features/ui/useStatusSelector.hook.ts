@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import EOrderStatus from "./order-status.enum";
 
 export default function useStatusSelector() {
-  const getStatusName = useCallback((status: EOrderStatus) => {
+  const getStatusName = useCallback((status?: EOrderStatus) => {
     switch (status) {
       case EOrderStatus.Ordered:
         return { label: "Commandée", variant: "info" };
@@ -14,6 +14,8 @@ export default function useStatusSelector() {
         return { label: "Livrée", variant: "primary-200" };
       case EOrderStatus.Cancelled:
         return { label: "Annulée", variant: "accent" };
+      default:
+        return { label: "", variant: "grey-200" };
     }
   }, []);
   return getStatusName;

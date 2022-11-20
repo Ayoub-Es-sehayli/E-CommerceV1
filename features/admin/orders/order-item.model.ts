@@ -17,7 +17,6 @@ export type OrderListRowModel = {
   id: string;
   client: string;
   status: OrderStatusModel;
-  statusVariant: string;
 };
 export type OrderItemModel = {
   id: string;

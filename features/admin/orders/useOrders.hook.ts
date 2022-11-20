@@ -1,12 +1,11 @@
 import EOrderStatus from "@features/ui/order-status.enum";
+import useStatusSelector from "@features/ui/useStatusSelector.hook";
 import { setOrders } from "@store/admin.slice";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
-  onSnapshot,
   orderBy,
   query as dbQuery,
   QueryConstraint,
@@ -26,17 +25,15 @@ import {
 import OrdersConverter from "./orders.converter";
 
 export default function useOrders() {
-  const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useAppDispatch();
-  const { orders: allOrders } = useAppSelector((state) => state.AdminSlice);
+  const getStatus = useStatusSelector();
   const [filter, setFilter] = useState<EOrderStatus>();
   const [startMonth, setStartMonth] = useState<Date>(
     new Date(new Date().getFullYear(), new Date().getMonth(), 1)
   );
-  useEffect(() => {
-    setIsLoading(true);
-    const nextMonth = moment(startMonth).add(1, "months").toDate();
 
+  const qs = useQueryClient();
+  const loadOrders = useCallback(() => {
+    const nextMonth = moment(startMonth).add(1, "months").toDate();
     const queryConstraints: QueryConstraint[] = [
       where("status.date", ">=", Timestamp.fromDate(startMonth)),
       where("status.date", "<", Timestamp.fromDate(nextMonth)),
@@ -46,50 +43,44 @@ export default function useOrders() {
       collection(firebaseDb, "orders"),
       ...queryConstraints
     ).withConverter(OrdersConverter);
-    getDocs(query).then((results) => {
-      const newOrders: OrderDbModel[] = [];
-      results.docChanges().forEach(({ doc: order, type: changeType }) => {
-        if (changeType === "added") {
-          newOrders.push({
-            ...order.data(),
-          });
-        }
-      });
-      dispatch(setOrders(newOrders));
-      setIsLoading(false);
-    });
+    return getDocs(query).then((results) =>
+      results.docs.map((order) => order.data())
+    );
   }, [startMonth]);
-  const getStatusVariant = useCallback((status?: EOrderStatus) => {
-    switch (status) {
-      case EOrderStatus.Ordered:
-        return "info";
-      case EOrderStatus.Validated:
-        return "warning";
-      case EOrderStatus.Delivering:
-        return "warning";
-      case EOrderStatus.Delivered:
-        return "primary-200";
-      case EOrderStatus.Cancelled:
-        return "accent";
-      default:
-        return "";
-    }
-  }, []);
-
-  const orders: OrderListRowModel[] = useMemo(() => {
-    return (
-      !filter
-        ? allOrders
-        : allOrders.filter((order) => order.status.type === filter)
-    ).map<OrderListRowModel>((order) => {
-      return {
-        id: order.id,
-        status: order.status,
-        client: order.recipient.firstName + " " + order.recipient.lastName,
-        statusVariant: `text-${getStatusVariant(order.status.type)}`,
-      };
-    });
-  }, [allOrders, filter, startMonth]);
+  const {
+    data: allOrders,
+    isLoading,
+    refetch,
+    isRefetching,
+    isFetching,
+  } = useQuery(["order-list", startMonth], loadOrders, {
+    select: (data) => {
+      return data.map<OrderListRowModel>((order) => {
+        return {
+          id: order.id,
+          status: order.status,
+          client: order.recipient.firstName + " " + order.recipient.lastName,
+        };
+      });
+    },
+    notifyOnChangeProps: ["data", "error"],
+  });
+  const handleDateSelection = useCallback(
+    (
+      values: DateSelectionFormData,
+      {}: FormikHelpers<DateSelectionFormData>
+    ) => {
+      qs.invalidateQueries(["order-list", startMonth]);
+      const newDate = new Date(values.year, values.month - 1, 1);
+      setStartMonth(newDate);
+      refetch();
+    },
+    []
+  );
+  const dataSelectionFormData: DateSelectionFormData = {
+    month: startMonth.getMonth() + 1,
+    year: startMonth.getFullYear(),
+  };
 
   const countByStatus: {
     all: number;
@@ -99,6 +90,15 @@ export default function useOrders() {
     delivered: number;
     cancelled: number;
   } = useMemo(() => {
+    if (!allOrders)
+      return {
+        all: 0,
+        cancelled: 0,
+        delivered: 0,
+        delivering: 0,
+        ordered: 0,
+        validated: 0,
+      };
     return {
       all: allOrders.length,
       ordered: allOrders.filter(
@@ -118,10 +118,6 @@ export default function useOrders() {
       ).length,
     };
   }, [allOrders]);
-
-  const filterOrders = useCallback((tabFilter?: EOrderStatus) => {
-    setFilter(tabFilter);
-  }, []);
   const tabs: TabProps[] = useMemo(() => {
     const props: TabProps[] = [
       {
@@ -129,8 +125,8 @@ export default function useOrders() {
         count: countByStatus.all,
         active: filter === undefined,
         variant: {
-          label: getStatusVariant(),
-          count: "bg-grey-200",
+          label: `text-${getStatus().variant}`,
+          count: `bg-${getStatus().variant}`,
         },
         filterOrders: () => filterOrders(undefined),
       },
@@ -139,8 +135,8 @@ export default function useOrders() {
         count: countByStatus.ordered,
         active: filter === EOrderStatus.Ordered,
         variant: {
-          label: `text-info`,
-          count: `bg-info-200`,
+          label: `text-${getStatus(EOrderStatus.Ordered).variant}`,
+          count: `bg-${getStatus(EOrderStatus.Ordered).variant}`,
         },
         filterOrders: () => filterOrders(EOrderStatus.Ordered),
       },
@@ -149,8 +145,8 @@ export default function useOrders() {
         count: countByStatus.validated,
         active: filter === EOrderStatus.Validated,
         variant: {
-          label: `text-warning`,
-          count: `bg-warning`,
+          label: `text-${getStatus(EOrderStatus.Validated).variant}`,
+          count: `bg-${getStatus(EOrderStatus.Validated).variant}`,
         },
         filterOrders: () => filterOrders(EOrderStatus.Validated),
       },
@@ -159,8 +155,8 @@ export default function useOrders() {
         count: countByStatus.delivering,
         active: filter === EOrderStatus.Delivering,
         variant: {
-          label: `text-${getStatusVariant(EOrderStatus.Delivering)}`,
-          count: `bg-${getStatusVariant(EOrderStatus.Delivering)}`,
+          label: `text-${getStatus(EOrderStatus.Delivering).variant}`,
+          count: `bg-${getStatus(EOrderStatus.Delivering).variant}`,
         },
         filterOrders: () => filterOrders(EOrderStatus.Delivering),
       },
@@ -169,8 +165,8 @@ export default function useOrders() {
         count: countByStatus.delivered,
         active: filter === EOrderStatus.Delivered,
         variant: {
-          label: `text-${getStatusVariant(EOrderStatus.Delivered)}`,
-          count: `bg-${getStatusVariant(EOrderStatus.Delivered)} text-white`,
+          label: `text-${getStatus(EOrderStatus.Delivered).variant}`,
+          count: `bg-${getStatus(EOrderStatus.Delivered).variant} text-white`,
         },
         filterOrders: () => filterOrders(EOrderStatus.Delivered),
       },
@@ -179,46 +175,30 @@ export default function useOrders() {
         count: countByStatus.cancelled,
         active: filter === EOrderStatus.Cancelled,
         variant: {
-          label: `text-${getStatusVariant(EOrderStatus.Cancelled)}`,
-          count: `bg-${getStatusVariant(EOrderStatus.Cancelled)} text-white`,
+          label: `text-${getStatus(EOrderStatus.Cancelled).variant}`,
+          count: `bg-${getStatus(EOrderStatus.Cancelled).variant} text-white`,
         },
         filterOrders: () => filterOrders(EOrderStatus.Cancelled),
       },
     ];
     return props;
   }, [allOrders, filter]);
-  const getStatusName = useCallback((status: EOrderStatus) => {
-    switch (status) {
-      case EOrderStatus.Ordered:
-        return "Commandée";
-      case EOrderStatus.Validated:
-        return "Validée";
-      case EOrderStatus.Delivering:
-        return "En Cours";
-      case EOrderStatus.Delivered:
-        return "Livrée";
-      case EOrderStatus.Cancelled:
-        return "Annulée";
-    }
-  }, []);
 
-  const handleDateSelection = (
-    values: DateSelectionFormData,
-    {}: FormikHelpers<DateSelectionFormData>
-  ) => {
-    const newDate = new Date(values.year, values.month - 1, 1);
-    setStartMonth(newDate);
-  };
-  const dataSelectionFormData: DateSelectionFormData = {
-    month: startMonth.getMonth() + 1,
-    year: startMonth.getFullYear(),
-  };
+  const orders: OrderListRowModel[] = useMemo(() => {
+    if (!allOrders) return [];
+    return !filter
+      ? allOrders
+      : allOrders.filter((order) => order.status.type === filter);
+  }, [allOrders, filter, startMonth]);
+
+  const filterOrders = useCallback((tabFilter?: EOrderStatus) => {
+    setFilter(tabFilter);
+  }, []);
 
   return {
     orders,
-    isLoading,
+    isLoading: isLoading,
     tabs,
-    getStatusName,
     handleDateSelection,
     dataSelectionFormData,
   };

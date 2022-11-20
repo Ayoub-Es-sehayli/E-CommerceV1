@@ -10,7 +10,7 @@ function Tab({ label, count, active, variant, filterOrders }: TabProps) {
         active ? "bg-white font-bold" : "hover:bg-light-200"
       }`}
     >
-      <span className={variant.label}>{label}</span>
+      <span className={variant.label + " whitespace-nowrap"}>{label}</span>
       <span className={`${variant.count} px-1 rounded-lg`}>{count}</span>
     </button>
   );

@@ -7,7 +7,13 @@ import OrderTabs from "./tabs.components";
 import useOrders from "./useOrders.hook";
 
 export default function OrdersContainer() {
-  const orderProps = useOrders();
+  const {
+    orders,
+    isLoading,
+    tabs,
+    dataSelectionFormData,
+    handleDateSelection,
+  } = useOrders();
 
   return (
     <>
@@ -21,24 +27,16 @@ export default function OrdersContainer() {
               Commandes
             </h1>
             <DateSelectorForm
-              initialValues={orderProps.dataSelectionFormData}
-              onSubmit={orderProps.handleDateSelection}
+              initialValues={dataSelectionFormData}
+              onSubmit={handleDateSelection}
             />
           </div>
-          <OrderTabs {...orderProps} />
+          <OrderTabs tabs={tabs} />
         </header>
 
-        <div className="flex flex-col gap-2 items-center">
-          {orderProps.isLoading ? (
-            <span className="pt-4">
-              <Spinner isLoading />
-            </span>
-          ) : (
-            <>
-              <OrdersList {...orderProps} />
-              {/* <Pagination /> */}
-            </>
-          )}
+        <div className="flex flex-col gap-2 items-center px-2">
+          <Spinner isLoading={isLoading} />
+          <OrdersList orders={orders} isLoading={isLoading} />
         </div>
       </div>
     </>
