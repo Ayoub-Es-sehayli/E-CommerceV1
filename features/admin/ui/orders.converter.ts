@@ -5,7 +5,7 @@ import {
   Timestamp,
   WithFieldValue,
 } from "firebase/firestore";
-import { OrderDbModel } from "./order-item.model";
+import { OrderDbModel } from "../orders/order-item.model";
 
 const OrdersConverter: FirestoreDataConverter<OrderDbModel> = {
   toFirestore(order: WithFieldValue<OrderDbModel>): DocumentData {
@@ -22,17 +22,13 @@ const OrdersConverter: FirestoreDataConverter<OrderDbModel> = {
       shipping: data.shipping,
       status: {
         type: data.status.type,
-        date: (data.status.date as Timestamp)
-          .toDate()
-          .toLocaleDateString("fr-fr"),
+        date: (data.status.date as Timestamp).toDate(),
       },
       history: data.history
         ? data.history.map((item: any) => {
             return {
               type: item.type,
-              date: (item.date as Timestamp)
-                .toDate()
-                .toLocaleDateString("fr-fr"),
+              date: (item.date as Timestamp).toDate(),
             };
           })
         : undefined,

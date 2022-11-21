@@ -1,99 +1,131 @@
 import EOrderStatus from "@features/ui/order-status.enum";
 import useStatusSelector from "@features/ui/useStatusSelector.hook";
 import { useAppSelector } from "@store/hooks";
-import { doc, updateDoc } from "firebase/firestore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { firebaseDb } from "services/firebase-service";
-import { HistoryItemModel, OrderPageModel } from "./order.model";
+import OrdersConverter from "../ui/orders.converter";
+import OrderItemConverter from "./order-item.converter";
+import {
+  HistoryItemModel,
+  OrderItemModel,
+  OrderPageModel,
+} from "./order.model";
 
 export default function useOrder() {
-  const { query, push } = useRouter();
-  const { orders } = useAppSelector((state) => state.AdminSlice);
-  const [isLoading, setIsLoading] = useState(false);
+  const { query, push, isReady } = useRouter();
   const getOrderStatus = useStatusSelector();
-  const [order, setOrder] = useState<OrderPageModel>({
-    id: "",
-    status: {
-      label: "",
-      variant: "",
-    },
-    history: [],
-    items: [],
-    recipient: {
-      fullName: "",
-      address: "",
-      city: "",
-      tel: "",
-    },
-    summary: {
-      date: "",
-      nbItems: 0,
-      total: 0,
-    },
-  });
+  const [orderId, setOrderId] = useState<string>("");
+  const qs = useQueryClient();
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      if (!query.id) {
+    if (isReady) {
+      const { id } = query;
+      if (!id) {
         push("/admin/orders");
       }
-      if (orders.length) {
-        orders.filter((value) => {
-          if (value.id === query.id) {
-            setOrder({
-              id: value.id,
-              status: getOrderStatus(value.status.type),
-              history: value.history
-                ? value.history.map<HistoryItemModel>((item) => {
-                    return {
-                      date: new Date(item.date),
-                      type: item.type,
-                    };
-                  })
-                : [],
-              items: value.items,
-              recipient: {
-                fullName:
-                  value.recipient.lastName + " " + value.recipient.firstName,
-                address: value.shipping.address,
-                city: value.shipping.city,
-                tel: value.recipient.tel,
-              },
-              summary: {
-                total: value.total,
-                date: value.status.date,
-                nbItems: value.items.length,
-              },
-            });
-          }
-        });
-      }
-    } catch (error) {
-      console.error(error);
+      setOrderId(id as string);
     }
-    setIsLoading(false);
+  }, [isReady]);
+  const loadOrderItem = useCallback((item: OrderItemModel) => {
+    return getDoc(
+      doc(firebaseDb, "products", item.id).withConverter(OrderItemConverter)
+    ).then((result) => {
+      const data = result.data();
+      if (!data) return item;
+      return {
+        ...item,
+        name: data.name,
+      };
+    });
   }, []);
+  const loadOrder = useCallback(() => {
+    const orderRef = doc(firebaseDb, "orders", orderId).withConverter(
+      OrdersConverter
+    );
+    return getDoc(orderRef).then(async (result) => {
+      const resultData = result.data()!;
+
+      return {
+        ...resultData,
+        history: resultData.history ? resultData.history : [],
+        items: resultData.items
+          ? await Promise.all(
+              resultData.items.map((item) =>
+                loadOrderItem(item).then((result) => result)
+              )
+            )
+          : [],
+      };
+    });
+  }, [orderId]);
+  const {
+    data: order,
+    isLoading,
+    refetch,
+  } = useQuery(["order", orderId], loadOrder, {
+    select: (data) => {
+      const orderData: OrderPageModel = {
+        ...data,
+        status: getOrderStatus(data.status.type),
+        history: data.history.map<HistoryItemModel>((item) => {
+          return {
+            date: item.date,
+            type: item.type,
+          };
+        }),
+        recipient: {
+          ...data.shipping,
+          fullName: data.recipient.lastName + " " + data.recipient.firstName,
+          tel: data.recipient.tel,
+        },
+        summary: {
+          total: data.total,
+          date: data.status.date.toLocaleDateString("fr-fr"),
+          nbItems: data.items.length,
+        },
+      };
+      return orderData;
+    },
+    enabled: orderId.length > 0,
+  });
+  const mutation = useMutation({
+    mutationFn: (orderDraft: { id: string; status: EOrderStatus }) => {
+      const orderRef = doc(firebaseDb, "orders", orderDraft.id);
+      return runTransaction(firebaseDb, async (transaction) => {
+        const oldOrderRef = await transaction.get(
+          orderRef.withConverter(OrdersConverter)
+        );
+        const { history } = oldOrderRef.data()!;
+        const updatedOrder = {
+          status: {
+            date: new Date(),
+            type: orderDraft.status,
+          },
+          history: [
+            {
+              date: new Date(),
+              type: orderDraft.status,
+            },
+            ...(history ? history : []),
+          ],
+        };
+        transaction.update(orderRef, updatedOrder);
+      });
+    },
+  });
   const HandleStatusChange = (status: EOrderStatus) => {
-    if (order.status === getOrderStatus(status)) {
+    if (!order || order.status === getOrderStatus(status)) {
       return;
     }
-    let orderDraft: any = { status: order.status, history: [...order.history] };
-    orderDraft.status = getOrderStatus(status);
-    orderDraft.history.push({
-      date: new Date(),
-      type: status,
-    });
-    setOrder({ ...order, ...orderDraft });
-    orderDraft.status = {
-      date: new Date(),
-      type: status,
+    qs.invalidateQueries(["order", orderId]);
+    let orderDraft = {
+      id: order.id,
+      status: status,
     };
-    const orderRef = doc(firebaseDb, "orders", order.id);
-    updateDoc(orderRef, orderDraft).catch((error) => {
-      alert("Une erreur s'est produite lors de la mise à jour de la commande");
-      console.error(error);
-    });
+    mutation.mutate(orderDraft);
+    refetch();
   };
   const CopyToClipboard = (value: string) => {
     navigator.clipboard.writeText(value);
