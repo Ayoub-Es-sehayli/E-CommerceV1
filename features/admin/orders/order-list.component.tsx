@@ -1,7 +1,5 @@
-import EOrderStatus from "@features/ui/order-status.enum";
 import { flexRender } from "@tanstack/react-table";
 import React from "react";
-import OrderItem from "./order-item.component";
 import { OrderListRowModel } from "./order-item.model";
 import useOrderTable from "./useOrderTable.hook";
 

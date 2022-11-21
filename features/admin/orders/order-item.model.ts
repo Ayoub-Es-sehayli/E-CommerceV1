@@ -24,7 +24,7 @@ export type OrderItemModel = {
   name: string;
 };
 export type OrderStatusModel = {
-  date: string;
+  date: Date;
   type: EOrderStatus;
 };
 export type OrderDbModel = {

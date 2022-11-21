@@ -1,8 +1,7 @@
+import OrdersConverter from "@features/admin/ui/orders.converter";
 import EOrderStatus from "@features/ui/order-status.enum";
 import useStatusSelector from "@features/ui/useStatusSelector.hook";
-import { setOrders } from "@store/admin.slice";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   collection,
   getDocs,
@@ -14,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { FormikHelpers } from "formik";
 import moment from "moment";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { firebaseDb } from "services/firebase-service";
 import {
   DateSelectionFormData,
@@ -22,7 +21,6 @@ import {
   OrderListRowModel,
   TabProps,
 } from "./order-item.model";
-import OrdersConverter from "./orders.converter";
 
 export default function useOrders() {
   const getStatus = useStatusSelector();
@@ -51,8 +49,6 @@ export default function useOrders() {
     data: allOrders,
     isLoading,
     refetch,
-    isRefetching,
-    isFetching,
   } = useQuery(["order-list", startMonth], loadOrders, {
     select: (data) => {
       return data.map<OrderListRowModel>((order) => {
