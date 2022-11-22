@@ -39,7 +39,7 @@ export default function useOrderTable(
     }),
     columnHelper.accessor("status.date", {
       header: "Code",
-      cell: (info) => info.getValue(),
+      cell: (info) => info.getValue().toLocaleDateString("fr-fr"),
     }),
     columnHelper.accessor("id", {
       header: "",
