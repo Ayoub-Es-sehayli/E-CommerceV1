@@ -18,7 +18,7 @@ const stateMapping = {
       category: indexUiState.hierarchicalMenu
         ? indexUiState.hierarchicalMenu["category.lvl0"]
         : indexUiState.hierarchicalMenu,
-      brand: indexUiState.refinementList ?? indexUiState.refinementList.brand,
+      brand: indexUiState.refinementList?.brand,
       price: indexUiState.range?.price,
       // page: indexUiState.page,
     };
