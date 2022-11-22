@@ -1,7 +1,6 @@
 import Modal from "@features/ui/modal.component";
 import NumberInput from "@features/ui/number-input.component";
-import { CartItem as Model } from "@store/cart.slice";
-import { Field, FieldArrayRenderProps, FieldHookConfig } from "formik";
+import { Field } from "formik";
 import useCartItem, { CartItemProps } from "./useCartItem";
 
 export default function CartItem(props: CartItemProps) {

@@ -25,9 +25,11 @@ export default function CartItemsList({ items, total }: Props) {
               ))
             }
           </FieldArray>
-          <span className="flex justify-between p-2 text-lg font-bold bg-light">
+          <span className="flex justify-between items-center p-2 text-lg font-bold bg-light rounded-md">
             <h3>
               Total <span className="font-normal text-sm">(4 articles)</span>
+              <br />
+              <small className="text-xs">Fraix de livraison non-inclus</small>
             </h3>
             <span>{total} DH</span>
           </span>
