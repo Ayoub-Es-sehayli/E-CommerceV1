@@ -5,7 +5,7 @@ export default function Header() {
   return (
     <header className="flex justify-between px-8 w-screen bg-white ">
       <Link href="/admin/dashboard">
-        <a className="">
+        <a className="text-info">
           <Image
             src="/static/logo.png"
             width={160}

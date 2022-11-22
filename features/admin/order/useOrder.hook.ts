@@ -3,8 +3,9 @@ import useStatusSelector from "@features/ui/useStatusSelector.hook";
 import { useAppSelector } from "@store/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
+import moment from "moment";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { firebaseDb } from "services/firebase-service";
 import OrdersConverter from "../ui/orders.converter";
 import OrderItemConverter from "./order-item.converter";
@@ -17,7 +18,9 @@ import {
 export default function useOrder() {
   const { query, push, isReady } = useRouter();
   const getOrderStatus = useStatusSelector();
-  const [orderId, setOrderId] = useState<string>("");
+  const [orderId, setOrderId] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const qs = useQueryClient();
   useEffect(() => {
     if (isReady) {
@@ -63,7 +66,7 @@ export default function useOrder() {
   const {
     data: order,
     isLoading,
-    refetch,
+    isRefetching,
   } = useQuery(["order", orderId], loadOrder, {
     select: (data) => {
       const orderData: OrderPageModel = {
@@ -91,9 +94,9 @@ export default function useOrder() {
     enabled: orderId.length > 0,
   });
   const mutation = useMutation({
-    mutationFn: (orderDraft: { id: string; status: EOrderStatus }) => {
+    mutationFn: async (orderDraft: { id: string; status: EOrderStatus }) => {
       const orderRef = doc(firebaseDb, "orders", orderDraft.id);
-      return runTransaction(firebaseDb, async (transaction) => {
+      return await runTransaction(firebaseDb, async (transaction) => {
         const oldOrderRef = await transaction.get(
           orderRef.withConverter(OrdersConverter)
         );
@@ -114,22 +117,34 @@ export default function useOrder() {
         transaction.update(orderRef, updatedOrder);
       });
     },
+    onSuccess: () => {
+      qs.invalidateQueries(["order", orderId]);
+      setToastMessage("Status Appliqué avec succès!");
+      setToastOpen(true);
+    },
   });
   const HandleStatusChange = (status: EOrderStatus) => {
     if (!order || order.status === getOrderStatus(status)) {
       return;
     }
-    qs.invalidateQueries(["order", orderId]);
     let orderDraft = {
       id: order.id,
       status: status,
     };
     mutation.mutate(orderDraft);
-    refetch();
   };
   const CopyToClipboard = (value: string) => {
     navigator.clipboard.writeText(value);
-    alert("Copié!");
+    setToastMessage("Copié!");
+    setToastOpen(true);
   };
-  return { order, isLoading, HandleStatusChange, CopyToClipboard };
+  return {
+    order,
+    isLoading: isLoading || isRefetching,
+    HandleStatusChange,
+    CopyToClipboard,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
+  };
 }

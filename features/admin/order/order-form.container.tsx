@@ -1,5 +1,9 @@
 import Spinner from "@features/ui/spinner.component";
-import * as Dialog from "@radix-ui/react-dialog";
+import Toast from "@features/ui/toast.component";
+import {
+  Provider as ToastProvider,
+  Viewport as ToastViewport,
+} from "@radix-ui/react-toast";
 import HistoryCard from "./history-card.component";
 import OrderItemsCard from "./order-items-card.component";
 import RecipientCard from "./recipient-card.component";
@@ -8,7 +12,15 @@ import SummaryCard from "./summary-card.component";
 import useOrder from "./useOrder.hook";
 
 export default function OrderFormContainer() {
-  const { order, isLoading, HandleStatusChange, CopyToClipboard } = useOrder();
+  const {
+    order,
+    isLoading,
+    HandleStatusChange,
+    CopyToClipboard,
+    toastOpen,
+    toastMessage,
+    setToastOpen,
+  } = useOrder();
   if (isLoading) {
     return <Spinner isLoading />;
   }
@@ -16,7 +28,7 @@ export default function OrderFormContainer() {
     return;
   }
   return (
-    <>
+    <ToastProvider>
       <article className="flex flex-col items-start font-sans w-full">
         <h1 className="font-bold font-serif text-2xl text-primary-400">
           <span>Commande {order.id} (</span>
@@ -56,6 +68,14 @@ export default function OrderFormContainer() {
           </aside>
         </section>
       </article>
-    </>
+      <Toast
+        title={toastMessage}
+        content=""
+        duration={3000}
+        onOpenChange={setToastOpen}
+        open={toastOpen}
+      ></Toast>
+      <ToastViewport className="fixed bottom-0 right-0 flex flex-col gap-3 outline-none p-6" />
+    </ToastProvider>
   );
 }
