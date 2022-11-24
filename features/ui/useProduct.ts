@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
 import { firebaseStorage } from "services/firebase-service";
+import useBrandSelector from "./useBrandSelector.hook";
 import useCategorySelector from "./useCategorySelector.hook";
 import useThumbnail from "./useThumbnail.hook";
 type ProductBase = {
@@ -36,6 +37,7 @@ export default function useProduct(item: Record<string, any>) {
   const dispatch = useAppDispatch();
   const getThumbnail = useThumbnail();
   const getCategoryById = useCategorySelector();
+  const getBrandById = useBrandSelector();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [product, setProduct] = useState<ProductCardModel>({
@@ -65,7 +67,7 @@ export default function useProduct(item: Record<string, any>) {
             : item.category.lvl0
             ? item.category.lvl0
             : getCategoryById(item.category),
-          brand: item.brand as string,
+          brand: getBrandById(item.brand),
           price: item.price as number,
           salePercentage: item.salePercentage as number,
           salePrice: item.price

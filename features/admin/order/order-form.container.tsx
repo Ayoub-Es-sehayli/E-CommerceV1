@@ -21,11 +21,8 @@ export default function OrderFormContainer() {
     toastMessage,
     setToastOpen,
   } = useOrder();
-  if (isLoading) {
+  if (!order || isLoading) {
     return <Spinner isLoading />;
-  }
-  if (!order) {
-    return;
   }
   return (
     <ToastProvider>
