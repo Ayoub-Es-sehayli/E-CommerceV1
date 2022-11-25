@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { Brand, Category, setBrands, setCategories } from "@store/ui.slice";
+import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { firebaseDb } from "services/firebase-service";
@@ -36,22 +37,29 @@ async function GetCategoriesAtLevel(current?: Category) {
 }
 export default function useUILoaders() {
   const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    setIsLoading(true);
-    getDocs(
-      collection(firebaseDb, "brands").withConverter(BrandConverter)
-    ).then((result) => {
-      const newBrands: Brand[] = [];
-      result.forEach((brand) => {
-        newBrands.push(brand.data());
-      });
-      dispatch(setBrands(newBrands));
-    });
-    GetCategoriesAtLevel().then((result) => {
-      dispatch(setCategories(result));
-    });
-    setIsLoading(false);
-  }, []);
-  return { isLoading };
+  const { isLoading: areBrandsLoading } = useQuery(
+    ["brands"],
+    () => {
+      return getDocs(
+        collection(firebaseDb, "brands").withConverter(BrandConverter)
+      ).then((result) => result.docs.map((brand) => brand.data()));
+    },
+    {
+      onSuccess: (result) => {
+        dispatch(setBrands(result));
+      },
+    }
+  );
+  const { isLoading: areCategoriesLoading } = useQuery(
+    ["categories"],
+    () => {
+      return GetCategoriesAtLevel();
+    },
+    {
+      onSuccess: (result) => {
+        dispatch(setCategories(result));
+      },
+    }
+  );
+  return { isLoading: areBrandsLoading && areCategoriesLoading };
 }
