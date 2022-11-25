@@ -33,6 +33,7 @@ export default function ProductForm(props: Props) {
         min={0}
         max={99}
       />
+      <CustomField label="Description" name="description" as="textarea" />
       <Field type="hidden" name="thumbnail" />
       <CustomField
         label="Image"

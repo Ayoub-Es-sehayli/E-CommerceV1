@@ -23,9 +23,9 @@ export default function ProductList({
     const columns = [
       columnHelper.accessor("name", {
         cell: (info) => (
-          <td className="max-w-[30ch] overflow-hidden whitespace-nowrap text-ellipsis">
+          <span className="max-w-[25ch] overflow-hidden whitespace-nowrap text-ellipsis">
             {info.getValue()}
-          </td>
+          </span>
         ),
         header: () => (
           <span className="max-w-[15ch] overflow-hidden whitespace-nowrap text-ellipsis">
@@ -48,7 +48,9 @@ export default function ProductList({
 
       columnHelper.accessor("createdAt", {
         cell: (info) => info.getValue().toLocaleDateString("fr-fr"),
-        header: "Date d'arrivage",
+        header: () => (
+          <span className="whitespace-nowrap">Date d'arrivage</span>
+        ),
       }),
       columnHelper.accessor("id", {
         header: "",
@@ -70,9 +72,6 @@ export default function ProductList({
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    // onPaginationChange: () => {
-    //   mutation.mutate();
-    // },
   });
   return (
     <section>
@@ -84,14 +83,12 @@ export default function ProductList({
               {headerGroup.headers.map((header) => {
                 return (
                   <th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : (
-                      <div>
-                        {flexRender(
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                      </div>
-                    )}
                   </th>
                 );
               })}
@@ -102,7 +99,7 @@ export default function ProductList({
           {table.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
+                <td key={cell.id} className="capitalize">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

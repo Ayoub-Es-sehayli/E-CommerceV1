@@ -32,21 +32,17 @@ export default function HierarchicalCategorySelect({
           <option className="font-bold" key={category.id} value={category.path}>
             {category.name}
           </option>
-          {category.subcategories && category.subcategories.length
-            ? category.subcategories.map((subcategory) => (
-                <>
-                  <CategoryItem key={subcategory.id} category={subcategory} />
-                  {subcategory.subcategories && subcategory.subcategories.length
-                    ? subcategory.subcategories.map((sub) => (
-                        <CategoryItem
-                          key={sub.id}
-                          category={{ ...sub, name: "- " + sub.name }}
-                        />
-                      ))
-                    : null}
-                </>
-              ))
-            : null}
+          {category.subcategories?.map((subcategory) => (
+            <>
+              <CategoryItem key={subcategory.id} category={subcategory} />
+              {subcategory.subcategories?.map((sub) => (
+                <CategoryItem
+                  key={sub.id}
+                  category={{ ...sub, name: "- " + sub.name }}
+                />
+              ))}
+            </>
+          ))}
         </>
       ))}
     </CustomField>

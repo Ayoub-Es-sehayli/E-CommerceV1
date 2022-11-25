@@ -11,6 +11,7 @@ export const ProductSchema = yup.object({
   brand: yup.string().required().default("Merci de choisir une marque"),
   quantity: yup.number().min(0).default(0),
   salePercentage: yup.number().min(0).default<number>(0),
+  description: yup.string(),
 });
 
 export type ProductBaseModel = yup.InferType<typeof ProductSchema>;

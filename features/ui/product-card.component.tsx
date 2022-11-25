@@ -139,6 +139,13 @@ export default function ProductDetailCard({
                   {product.brand}
                 </span>
               </span>
+              <span>
+                <span>Description: </span>
+                <br />
+                <span className="text-grey-400 capitalize">
+                  ;lkja;lkdsfj;lkasjdf
+                </span>
+              </span>
               <span className="flex justify-around">
                 <span
                   className={`${

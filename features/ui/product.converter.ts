@@ -21,6 +21,7 @@ export const ProductConverter: FirestoreDataConverter<ProductBaseModel> = {
       quantity: data.quantity,
       salePercentage: data.salePercentage,
       thumbnailUrl: undefined,
+      description: data.description,
     };
   },
 };

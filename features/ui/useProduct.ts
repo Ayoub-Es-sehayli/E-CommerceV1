@@ -13,6 +13,7 @@ type ProductBase = {
   price?: number;
   salePrice?: number;
   salePercentage?: number;
+  description?: string;
   createdAt?: string;
 };
 
@@ -73,6 +74,7 @@ export default function useProduct(item: Record<string, any>) {
           salePrice: item.price
             ? item.price - Math.ceil(item.price * (item.salePercentage / 100))
             : undefined,
+          description: item.description,
         };
         setProduct(product);
         setIsLoading(false);
