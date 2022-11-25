@@ -38,6 +38,7 @@ export default function Navigation() {
       children: "Annonces",
       className: "bi-megaphone",
     },
+    { href: "/admin/brands", children: "Marques", className: "bi-tags" },
   ];
   return (
     <nav className="bg-white rounded-lg w-1/5 p-4">

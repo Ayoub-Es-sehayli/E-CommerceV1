@@ -18,7 +18,8 @@ type CarouselProps = {
   annoucements: ItemProps[];
 };
 export function Carousel({ annoucements: items }: CarouselProps) {
-  const [current, setCurrent] = useState<number>(0);
+  const [current, setCurrent] = useState(0);
+  if (items.length === 0) return <></>;
   return (
     <>
       <div className="daisy-carousel relative rounded-t-2xl w-full lg:hidden">

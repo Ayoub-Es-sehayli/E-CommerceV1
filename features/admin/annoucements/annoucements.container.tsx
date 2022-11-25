@@ -1,15 +1,26 @@
+import Toast from "@features/ui/toast.component";
+import { ToastProvider, ToastViewport } from "@radix-ui/react-toast";
 import Head from "next/head";
 import AnnoucementItem from "./annoucement-item.component";
 import useAnnoucements from "./useAnnoucements.hook";
 
 export default function AnnoucementsContainer() {
-  const { items, fileRef, handleOnClick, annoucementCount } = useAnnoucements();
+  const {
+    items,
+    fileRef,
+    handleOnClick,
+    handleFileOnChange,
+    annoucementCount,
+    setToastOpen,
+    toastMessage,
+    toastOpen,
+  } = useAnnoucements();
   return (
     <>
       <Head>
         <title>Gestion des Annonces</title>
       </Head>
-      <div className="flex flex-col gap-0">
+      <div className="flex flex-col gap-1">
         <header className="flex flex-col gap-1">
           <div className="flex justify-between items-center">
             <h1 className="text-primary-400 font-bold text-xl font-serif">
@@ -35,7 +46,22 @@ export default function AnnoucementsContainer() {
           ))}
         </section>
       </div>
-      <input type="file" ref={fileRef} className="hidden" accept="image/*" />
+      <input
+        type="file"
+        ref={fileRef}
+        onChange={handleFileOnChange}
+        className="hidden"
+        accept="image/*"
+      />
+      <ToastProvider>
+        <Toast
+          content=""
+          title={toastMessage}
+          open={toastOpen}
+          onOpenChange={setToastOpen}
+        />
+        <ToastViewport className="fixed bottom-0 right-0 flex flex-col gap-3 outline-none p-6" />
+      </ToastProvider>
     </>
   );
 }

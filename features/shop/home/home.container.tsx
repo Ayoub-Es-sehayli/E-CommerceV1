@@ -15,9 +15,7 @@ export function HomeContainer() {
       </Head>
       <div className="flex flex-col space-y-6">
         <section className="bg-light rounded-2xl">
-          {annoucements.length ? (
-            <Carousel annoucements={annoucements} />
-          ) : null}
+          <Carousel annoucements={annoucements} />
           <Hero />
         </section>
         <section className="flex flex-col gap-4 md:mx-auto md:w-8/12 font-serif font-bold text-primary-600 text-lg md:text-xl">

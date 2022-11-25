@@ -23,11 +23,11 @@ function useAnnoucement(src: string) {
   return { image, isLoading };
 }
 export default function AnnoucementItem({ id, src, handleOnClick }: ItemProps) {
-  const { image, isLoading } = useAnnoucement(src);
+  // const { image, isLoading } = useAnnoucement(src);
   return (
     <article className="relative group">
-      <img src={image} alt="Annonce" className={isLoading ? "hidden" : ""} />
-      <Spinner isLoading={isLoading} />
+      <img src={src} alt="Annonce" width={992} height={348} />
+      {/* <Spinner isLoading={isLoading} /> */}
       <span className="hidden absolute group-hover:flex inset-0 items-center justify-center  bg-grey-200 backdrop-blur-sm">
         <button
           onClick={() => handleOnClick(id)}
