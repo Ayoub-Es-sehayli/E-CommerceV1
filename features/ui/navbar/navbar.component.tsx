@@ -16,7 +16,7 @@ export default function NavBar(algoliaProps: UseHierarchicalMenuProps) {
         >
           <i className="bi bi-list text-xl"></i>
         </label>
-        <Link href="/shop">
+        <Link href="/">
           <a className="">
             <Image
               src="/static/logo.png"

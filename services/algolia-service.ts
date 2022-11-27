@@ -20,7 +20,7 @@ const stateMapping = {
         : indexUiState.hierarchicalMenu,
       brand: indexUiState.refinementList?.brand,
       price: indexUiState.range?.price,
-      // page: indexUiState.page,
+      page: indexUiState.page,
     };
   },
   routeToState: (routeState: any) => {
@@ -36,7 +36,7 @@ const stateMapping = {
         range: {
           price: routeState.price,
         },
-        // page: routeState.page,
+        page: routeState.page,
       },
     };
   },

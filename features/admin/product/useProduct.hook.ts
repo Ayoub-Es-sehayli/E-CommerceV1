@@ -1,4 +1,5 @@
 import { ProductConverter } from "@features/ui/product.converter";
+import { ProductBaseModel } from "@features/ui/product.schema";
 import useBrandSelector from "@features/ui/useBrandSelector.hook";
 import useCategorySelector from "@features/ui/useCategorySelector.hook";
 import useThumbnail from "@features/ui/useThumbnail.hook";
@@ -13,7 +14,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ref, uploadString } from "firebase/storage";
-import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { algoliaAdminClient } from "services/algolia-service";
@@ -42,7 +42,7 @@ export default function useProduct() {
         category: "",
         price: 0,
         salePercentage: 0,
-      } as ReturnType<typeof ProductConverter.fromFirestore>,
+      } as ProductBaseModel,
     }
   );
   const qs = useQueryClient();
@@ -159,7 +159,7 @@ export default function useProduct() {
   };
   return {
     isLoading,
-    product,
+    product: product!,
     brands,
     categories,
     handleSubmit,

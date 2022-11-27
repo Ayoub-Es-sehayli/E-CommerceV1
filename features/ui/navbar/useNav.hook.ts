@@ -8,7 +8,10 @@ import {
 export default function useNav(algoliaProps: UseHierarchicalMenuProps) {
   const { isLoggedIn, Logout } = useSession();
   const { categories } = useAppSelector((state) => state.UISlice);
-  const { refine } = useHierarchicalMenu(algoliaProps);
+  const { refine } = useHierarchicalMenu({
+    ...algoliaProps,
+    attributes: ["category.lvl0", "category.lvl1", "category.lvl2"],
+  });
   return {
     isLoggedIn,
     categories,

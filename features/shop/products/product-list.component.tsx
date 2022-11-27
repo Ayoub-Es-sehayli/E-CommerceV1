@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   ClearRefinements,
   Hits,
+  Pagination,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
@@ -45,6 +46,11 @@ export default function ProductList() {
             list: "grid grid-cols-2 md:grid-cols-4 gap-2",
           }}
           hitComponent={({ hit }) => <ProductCard item={hit} />}
+        />
+        <Pagination
+          classNames={{
+            list: "flex gap-4 p-4",
+          }}
         />
       </section>
     </section>
