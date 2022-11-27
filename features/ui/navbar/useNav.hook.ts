@@ -3,15 +3,24 @@ import { useAppSelector } from "@store/hooks";
 import {
   useHierarchicalMenu,
   UseHierarchicalMenuProps,
+  useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
 export default function useNav(algoliaProps: UseHierarchicalMenuProps) {
   const { isLoggedIn, Logout } = useSession();
   const { categories } = useAppSelector((state) => state.UISlice);
-  const { refine } = useHierarchicalMenu({
-    ...algoliaProps,
-    attributes: ["category.lvl0", "category.lvl1", "category.lvl2"],
-  });
+  const { setIndexUiState } = useInstantSearch();
+  const refine = (value: string) => {
+    setIndexUiState((oldState) => {
+      const newState = {
+        ...oldState,
+        hierarchicalMenu: {
+          "category.lvl0": [value],
+        },
+      };
+      return newState;
+    });
+  };
   return {
     isLoggedIn,
     categories,

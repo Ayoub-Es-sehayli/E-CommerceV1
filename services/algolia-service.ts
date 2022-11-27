@@ -13,6 +13,7 @@ export const algoliaAdminClient = algoliaadminsearch(
 const stateMapping = {
   stateToRoute: (uiState: any) => {
     const indexUiState = uiState["dev_products"];
+    console.log(indexUiState);
     return {
       q: indexUiState.query,
       category: indexUiState.hierarchicalMenu

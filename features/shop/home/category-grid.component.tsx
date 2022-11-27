@@ -1,12 +1,24 @@
 import { useAppSelector } from "@store/hooks";
 import Link from "next/link";
-import { useHierarchicalMenu } from "react-instantsearch-hooks-web";
+import {
+  useHierarchicalMenu,
+  useInstantSearch,
+} from "react-instantsearch-hooks-web";
 
 export default function CategoryGrid() {
   const categories = useAppSelector((state) => state.UISlice.categories);
-  const { refine } = useHierarchicalMenu({
-    attributes: ["category.lvl0", "category.lvl1", "category.lvl2"],
-  });
+  const { setIndexUiState } = useInstantSearch();
+  const refine = (value: string) => {
+    setIndexUiState((oldState) => {
+      const newState = {
+        ...oldState,
+        hierarchicalMenu: {
+          "category.lvl0": [value],
+        },
+      };
+      return newState;
+    });
+  };
   return (
     <>
       {Array.from({ length: categories.length }, (v, i) => {
