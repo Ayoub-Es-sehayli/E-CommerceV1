@@ -7,9 +7,10 @@ import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import * as yup from "yup";
 const useBrandForm = () => {
+  const firebaseDb = useFirebaseDb();
   const [toastMessage, setToastMessage] = useState("");
   const [toastOpen, setToastOpen] = useState(false);
   const router = useRouter();
