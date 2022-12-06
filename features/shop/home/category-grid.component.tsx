@@ -21,7 +21,7 @@ export default function CategoryGrid() {
   };
   return (
     <>
-      {Array.from({ length: categories.length }, (v, i) => {
+      {Array.from({ length: categories.length / 3 }, (v, i) => {
         return (
           <div
             key={i}
