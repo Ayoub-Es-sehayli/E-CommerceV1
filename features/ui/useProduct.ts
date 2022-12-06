@@ -2,7 +2,7 @@ import { addToCart } from "@store/cart.slice";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useCallback, useEffect, useState } from "react";
-import { firebaseStorage } from "services/firebase-service";
+import { useFirebaseStorage } from "services/firebase-service";
 import useBrandSelector from "./useBrandSelector.hook";
 import useCategorySelector from "./useCategorySelector.hook";
 import useThumbnail from "./useThumbnail.hook";
@@ -35,6 +35,7 @@ export type ProductCardModel = ProductBase & {
 };
 
 export default function useProduct(item: Record<string, any>) {
+  const firebaseStorage = useFirebaseStorage();
   const dispatch = useAppDispatch();
   const getThumbnail = useThumbnail();
   const getCategoryById = useCategorySelector();

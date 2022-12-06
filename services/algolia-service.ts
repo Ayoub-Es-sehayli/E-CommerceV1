@@ -1,19 +1,24 @@
 import algoliaadminsearch from "algoliasearch";
 import algoliasearch from "algoliasearch/lite";
-import { NextRouter, useRouter } from "next/router";
+import { NextRouter } from "next/router";
 
-export const algoliaSearchClient = algoliasearch(
-  process.env.ALGOLIA_APP_ID!,
-  process.env.ALGOLIA_API_KEY!
-);
-export const algoliaAdminClient = algoliaadminsearch(
-  process.env.ALGOLIA_APP_ID!,
-  process.env.ALGOLIA_ADMIN_KEY!
-);
+export const useAlgoliaSearchClient = () => {
+  const algoliaSearchClient = algoliasearch(
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+    process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
+  );
+  return algoliaSearchClient;
+};
+export const useAlgoliaAdminClient = () => {
+  const algoliaAdminClient = algoliaadminsearch(
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+    process.env.NEXT_PUBLIC_ALGOLIA_ADMIN_KEY!
+  );
+  return algoliaAdminClient;
+};
 const stateMapping = {
   stateToRoute: (uiState: any) => {
     const indexUiState = uiState["dev_products"];
-    console.log(indexUiState);
     return {
       q: indexUiState.query,
       category: indexUiState.hierarchicalMenu

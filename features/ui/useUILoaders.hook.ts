@@ -3,11 +3,12 @@ import { Brand, Category, setBrands, setCategories } from "@store/ui.slice";
 import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import BrandConverter from "./brand.converter";
 import CategoryConverter from "./category.converter";
 
 async function GetCategoriesAtLevel(current?: Category) {
+  const firebaseDb = useFirebaseDb();
   const queryConstraints = [orderBy("productCount", "desc")];
   const collectionPath: string = current
     ? `${current.path}/subcategories`
@@ -36,6 +37,7 @@ async function GetCategoriesAtLevel(current?: Category) {
   return categories;
 }
 export default function useUILoaders() {
+  const firebaseDb = useFirebaseDb();
   const dispatch = useAppDispatch();
   const { isLoading: areBrandsLoading } = useQuery(
     ["brands"],

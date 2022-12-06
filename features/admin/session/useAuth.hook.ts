@@ -8,10 +8,12 @@ import {
 import { collection, doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { firebaseAuth, firebaseDb } from "services/firebase-service";
+import { useFirebaseAuth, useFirebaseDb } from "services/firebase-service";
 import UserConverter from "./user.converter";
 
 export default function useAuth() {
+  const firebaseAuth = useFirebaseAuth();
+  const firebaseDb = useFirebaseDb();
   const { isLoggedIn } = useSession();
   const [unauthorized, setUnauthorized] = useState(false);
   const router = useRouter();

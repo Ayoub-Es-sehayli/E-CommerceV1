@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { InstantSearch } from "react-instantsearch-hooks-web";
 import {
   algoliaRoutingConfig,
-  algoliaSearchClient,
+  useAlgoliaSearchClient,
 } from "services/algolia-service";
 import Footer from "./footer.component";
 import NavBar from "./navbar/navbar.component";
@@ -13,10 +13,11 @@ import useUILoaders from "./useUILoaders.hook";
 export default function ShopLayout({ children }: PropsWithChildren) {
   const { isLoading } = useUILoaders();
   const router = useRouter();
+  const algoliaSearchClient = useAlgoliaSearchClient();
   return (
     <InstantSearch
       searchClient={algoliaSearchClient}
-      indexName="dev_products"
+      indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME!}
       routing={algoliaRoutingConfig(router)}
     >
       <div className="daisy-drawer">

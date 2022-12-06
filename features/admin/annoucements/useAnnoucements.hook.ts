@@ -18,10 +18,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { firebaseDb, firebaseStorage } from "services/firebase-service";
+import { useFirebaseDb, useFirebaseStorage } from "services/firebase-service";
 import AnnoucementModel from "./annoucement.mode";
 
 export default function useAnnoucements() {
+  const firebaseDb = useFirebaseDb();
+  const firebaseStorage = useFirebaseStorage();
   const qs = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const getThumbnail = useThumbnail("annoucements");

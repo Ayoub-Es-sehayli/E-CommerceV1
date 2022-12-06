@@ -12,12 +12,13 @@ import {
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { firebaseAuth } from "services/firebase-service";
+import { useFirebaseAuth } from "services/firebase-service";
 import useSession from "./useSession.hook";
 interface Credentials {
   email: string;
 }
 export default function useAuth() {
+  const firebaseAuth = useFirebaseAuth();
   const { isLoggedIn } = useSession();
   const [emailSent, setEmailSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

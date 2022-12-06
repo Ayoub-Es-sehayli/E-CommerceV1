@@ -29,7 +29,9 @@ export default function CartItemsList({ items, total }: Props) {
             <h3>
               Total <span className="font-normal text-sm">(4 articles)</span>
               <br />
-              <small className="text-xs">Fraix de livraison non-inclus</small>
+              <small className="text-xs">
+                Fraix de livraison non-inclus avec un total &gt; 350DH
+              </small>
             </h3>
             <span>{total} DH</span>
           </span>

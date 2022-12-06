@@ -1,9 +1,9 @@
 import { getDownloadURL, ref } from "firebase/storage";
 import { useCallback } from "react";
-import { firebaseStorage } from "services/firebase-service";
-import { string } from "yup";
+import { useFirebaseStorage } from "services/firebase-service";
 
 export default function useThumbnail(folder?: string) {
+  const firebaseStorage = useFirebaseStorage();
   const getThumbnail = useCallback((thumbnail: string) => {
     let result = Promise.resolve(thumbnail as string);
     try {
