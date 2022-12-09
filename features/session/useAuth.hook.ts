@@ -38,7 +38,7 @@ export default function useAuth() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) router.push("/shop");
+    if (isLoggedIn) router.push("/");
   }, [isLoggedIn]);
   const handleGoogleSignIn = async () => {
     const googleProvider = new GoogleAuthProvider();
@@ -48,9 +48,9 @@ export default function useAuth() {
           const credentials = GoogleAuthProvider.credentialFromResult(result);
           if (credentials) {
             alert(`Is Google Auth ${result.user.uid}`);
-            // signInWithCredential(firebaseAuth, credentials).catch((error) => {
-            //   console.log(error);
-            // });
+            signInWithCredential(firebaseAuth, credentials).catch((error) => {
+              console.log(error);
+            });
           } else {
             console.error("Failed to authenticate user");
           }
