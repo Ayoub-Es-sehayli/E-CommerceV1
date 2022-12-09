@@ -16,7 +16,6 @@ const CategoryConverter: FirestoreDataConverter<Category> = {
       id: snapshot.id,
       path: snapshot.ref.path,
       name: data.name,
-      productCount: data.productCount,
       subcategories: data.subcategories,
     };
   },

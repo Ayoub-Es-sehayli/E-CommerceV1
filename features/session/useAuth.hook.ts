@@ -12,12 +12,13 @@ import {
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
-import { firebaseAuth } from "services/firebase-service";
+import { useFirebaseAuth } from "services/firebase-service";
 import useSession from "./useSession.hook";
 interface Credentials {
   email: string;
 }
 export default function useAuth() {
+  const firebaseAuth = useFirebaseAuth();
   const { isLoggedIn } = useSession();
   const [emailSent, setEmailSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +38,7 @@ export default function useAuth() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) router.push("/shop");
+    if (isLoggedIn) router.push("/");
   }, [isLoggedIn]);
   const handleGoogleSignIn = async () => {
     const googleProvider = new GoogleAuthProvider();
@@ -47,9 +48,9 @@ export default function useAuth() {
           const credentials = GoogleAuthProvider.credentialFromResult(result);
           if (credentials) {
             alert(`Is Google Auth ${result.user.uid}`);
-            // signInWithCredential(firebaseAuth, credentials).catch((error) => {
-            //   console.log(error);
-            // });
+            signInWithCredential(firebaseAuth, credentials).catch((error) => {
+              console.log(error);
+            });
           } else {
             console.error("Failed to authenticate user");
           }

@@ -6,7 +6,7 @@ import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import OrdersConverter from "../ui/orders.converter";
 import OrderItemConverter from "./order-item.converter";
 import {
@@ -16,6 +16,7 @@ import {
 } from "./order.model";
 
 export default function useOrder() {
+  const firebaseDb = useFirebaseDb();
   const { query, push, isReady } = useRouter();
   const getOrderStatus = useStatusSelector();
   const [orderId, setOrderId] = useState("");

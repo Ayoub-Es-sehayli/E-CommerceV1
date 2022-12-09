@@ -2,9 +2,10 @@ import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { login, logout } from "@store/session.slice";
 import { signOut } from "firebase/auth";
 import { useCallback, useEffect } from "react";
-import { firebaseAuth } from "services/firebase-service";
+import { useFirebaseAuth } from "services/firebase-service";
 
 export default function useSession() {
+  const firebaseAuth = useFirebaseAuth();
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.SessionSlice.isLoggedIn);
 

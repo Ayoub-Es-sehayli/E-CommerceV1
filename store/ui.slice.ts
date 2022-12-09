@@ -4,7 +4,6 @@ export interface Category {
   id: string;
   path: string;
   name: string;
-  productCount: number;
   subcategories?: Category[];
 }
 export interface Brand {

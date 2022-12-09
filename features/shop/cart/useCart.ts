@@ -6,10 +6,11 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { FormikHelpers } from "formik";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import CheckoutFormModel from "./checkout.schema";
 
 export default function useCart() {
+  const firebaseDb = useFirebaseDb();
   const { isLoggedIn } = useSession();
   const dispatch = useAppDispatch();
   const router = useRouter();

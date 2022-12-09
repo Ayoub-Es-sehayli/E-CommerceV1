@@ -11,9 +11,10 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 
 export default function useHome() {
+  const firebaseDb = useFirebaseDb();
   const [latest, setLatest] = useState<ProductCardModel[]>([]);
   const [onSale, setOnSale] = useState<ProductCardModel[]>([]);
   const [annoucements, setAnnoucements] = useState<

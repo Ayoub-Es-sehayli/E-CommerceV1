@@ -16,11 +16,14 @@ import {
 import { ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/router";
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { algoliaAdminClient } from "services/algolia-service";
-import { firebaseDb, firebaseStorage } from "services/firebase-service";
+import { useAlgoliaAdminClient } from "services/algolia-service";
+import { useFirebaseDb, useFirebaseStorage } from "services/firebase-service";
 import { ProductDbModel } from "./product.model";
 
 export default function useProduct() {
+  const firebaseDb = useFirebaseDb();
+  const firebaseStorage = useFirebaseStorage();
+  const algoliaAdminClient = useAlgoliaAdminClient();
   const { query, push, replace, isReady } = useRouter();
   const getCategoryById = useCategorySelector();
   const getBrandById = useBrandSelector();

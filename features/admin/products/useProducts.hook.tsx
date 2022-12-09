@@ -9,11 +9,12 @@ import {
   query as dbQuery,
   QueryConstraint,
 } from "firebase/firestore";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import { ProductItemModel } from "./product-item.model";
 import { ProductListItemConverter } from "./products.converter";
 
 export default function useProducts() {
+  const firebaseDb = useFirebaseDb();
   const getBrandById = useBrandSelector();
   const getCategoryById = useCategorySelector();
 

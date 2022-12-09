@@ -2,21 +2,19 @@ import { useAppDispatch, useAppSelector } from "@store/hooks";
 import { Brand, Category, setBrands, setCategories } from "@store/ui.slice";
 import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import BrandConverter from "./brand.converter";
 import CategoryConverter from "./category.converter";
 
 async function GetCategoriesAtLevel(current?: Category) {
-  const queryConstraints = [orderBy("productCount", "desc")];
+  const firebaseDb = useFirebaseDb();
   const collectionPath: string = current
     ? `${current.path}/subcategories`
     : "categories";
   let data = await getDocs(
-    query(
-      collection(firebaseDb, collectionPath),
-      ...queryConstraints
-    ).withConverter(CategoryConverter)
+    query(collection(firebaseDb, collectionPath)).withConverter(
+      CategoryConverter
+    )
   );
   const categories: Category[] = await Promise.all(
     data.docs.map<Promise<Category>>(async (current) => {
@@ -24,18 +22,25 @@ async function GetCategoriesAtLevel(current?: Category) {
         ...current.data(),
       };
       const hierarchyLevel = currentCategory.path.split("/").length / 2;
-      const hasSubLevel: boolean = hierarchyLevel < 3;
+      const hasSubLevel: boolean = hierarchyLevel < 2;
       if (hasSubLevel) {
         currentCategory.subcategories = await GetCategoriesAtLevel(
           currentCategory
         );
       }
+      console.log(
+        "hiererchy level: ",
+        hierarchyLevel,
+        "name: ",
+        currentCategory.name
+      );
       return currentCategory;
     })
   );
   return categories;
 }
 export default function useUILoaders() {
+  const firebaseDb = useFirebaseDb();
   const dispatch = useAppDispatch();
   const { isLoading: areBrandsLoading } = useQuery(
     ["brands"],

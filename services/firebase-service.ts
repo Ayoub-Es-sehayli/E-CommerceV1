@@ -1,32 +1,40 @@
 import { FirebaseOptions, initializeApp } from "firebase/app";
-import {
-  ActionCodeSettings,
-  getAuth,
-  GoogleAuthProvider,
-  sendSignInLinkToEmail,
-  signInWithEmailLink,
-  signInWithRedirect,
-  signOut,
-} from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
-  measurementId: process.env.FIREBASE_MEASUREMENT_ID,
+const useFirebaseConfig = () => {
+  const firebaseConfig: FirebaseOptions = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  };
+  return firebaseConfig;
 };
-const firebaseApp = initializeApp(firebaseConfig);
+const useFirebaseApp = () => {
+  const firebaseConfig = useFirebaseConfig();
+  const firebaseApp = initializeApp(firebaseConfig);
+  return firebaseApp;
+};
 
-const firebaseDb = getFirestore(firebaseApp);
+export const useFirebaseDb = () => {
+  const firebaseApp = useFirebaseApp();
+  const firebaseDb = getFirestore(firebaseApp);
+  return firebaseDb;
+};
+export const useFirebaseAuth = () => {
+  const firebaseApp = useFirebaseApp();
+  const firebaseAuth = getAuth(firebaseApp);
+  firebaseAuth.languageCode = "fr";
+  return firebaseAuth;
+};
 
-const firebaseAuth = getAuth(firebaseApp);
-firebaseAuth.languageCode = "fr";
-
-const firebaseStorage = getStorage(firebaseApp);
-
-export { firebaseAuth, firebaseDb, firebaseStorage };
+export const useFirebaseStorage = () => {
+  const firebaseApp = useFirebaseApp();
+  const firebaseStorage = getStorage(firebaseApp);
+  return firebaseStorage;
+};

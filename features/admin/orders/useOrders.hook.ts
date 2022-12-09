@@ -14,7 +14,7 @@ import {
 import { FormikHelpers } from "formik";
 import moment from "moment";
 import { useCallback, useMemo, useState } from "react";
-import { firebaseDb } from "services/firebase-service";
+import { useFirebaseDb } from "services/firebase-service";
 import {
   DateSelectionFormData,
   OrderDbModel,
@@ -23,6 +23,7 @@ import {
 } from "./order-item.model";
 
 export default function useOrders() {
+  const firebaseDb = useFirebaseDb();
   const getStatus = useStatusSelector();
   const [filter, setFilter] = useState<EOrderStatus>();
   const [startMonth, setStartMonth] = useState<Date>(
