@@ -8,7 +8,7 @@ export default function ProductsContainer() {
   return (
     <>
       <Head>
-        <title>Administration - Liste des Produits</title>
+        <title>Administration Parafait - Liste des Produits</title>
       </Head>
       <div className="flex flex-col gap-2">
         <header className="flex justify-between items-center">

@@ -5,6 +5,7 @@ import { ToastProvider, ToastViewport } from "@radix-ui/react-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { Field, Form, Formik } from "formik";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useFirebaseDb } from "services/firebase-service";
@@ -63,35 +64,40 @@ export default function BrandFormContainer() {
   const { toastOpen, toastMessage, setToastOpen, ...formProps } =
     useBrandForm();
   return (
-    <section>
-      <ToastProvider>
-        <Formik {...formProps}>
-          {({ isSubmitting }) => (
-            <Form className="flex flex-col gap-2 mx-auto w-1/2">
-              <h1 className="text-lg font-bold">Marque</h1>
-              <Field type="hidden" name="id" />
-              <CustomField
-                name="name"
-                className="rounded-lg border p-2 focus:outline-2 focus:outline-primary-600 text-lg text-black"
-              />
-              <button
-                type="submit"
-                className="flex justify-center text-lg bg-primary-400 text-white p-2 rounded-lg"
-              >
-                {isSubmitting ? <Spinner isLoading /> : "Sauvegarder"}
-              </button>
-            </Form>
-          )}
-        </Formik>
-        <Toast
-          title={toastMessage}
-          content=""
-          duration={3000}
-          onOpenChange={setToastOpen}
-          open={toastOpen}
-        ></Toast>
-        <ToastViewport className="fixed bottom-0 right-0 flex flex-col gap-3 outline-none p-6" />
-      </ToastProvider>
-    </section>
+    <>
+      <Head>
+        <title>Administration Parafait - Formulaire des Marques</title>
+      </Head>
+      <section>
+        <ToastProvider>
+          <Formik {...formProps}>
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-2 mx-auto w-1/2">
+                <h1 className="text-lg font-bold">Marque</h1>
+                <Field type="hidden" name="id" />
+                <CustomField
+                  name="name"
+                  className="rounded-lg border p-2 focus:outline-2 focus:outline-primary-600 text-lg text-black"
+                />
+                <button
+                  type="submit"
+                  className="flex justify-center text-lg bg-primary-400 text-white p-2 rounded-lg"
+                >
+                  {isSubmitting ? <Spinner isLoading /> : "Sauvegarder"}
+                </button>
+              </Form>
+            )}
+          </Formik>
+          <Toast
+            title={toastMessage}
+            content=""
+            duration={3000}
+            onOpenChange={setToastOpen}
+            open={toastOpen}
+          ></Toast>
+          <ToastViewport className="fixed bottom-0 right-0 flex flex-col gap-3 outline-none p-6" />
+        </ToastProvider>
+      </section>
+    </>
   );
 }

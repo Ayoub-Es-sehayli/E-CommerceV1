@@ -66,7 +66,7 @@ export default function BrandsContainer() {
   return (
     <>
       <Head>
-        <title>Gestion des Marques</title>
+        <title>Administration Parafait - Gestion des Marques</title>
       </Head>
       <table className="w-full text-left m-4">
         <thead>

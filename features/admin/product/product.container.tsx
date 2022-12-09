@@ -19,7 +19,7 @@ export default function ProductContainer() {
   return (
     <>
       <Head>
-        <title>Nouveau Produit</title>
+        <title>Administration Parafait - Formulaire des Produits</title>
       </Head>
       {isLoading ? (
         <Spinner isLoading />
